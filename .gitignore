@@ -4,4 +4,4 @@
 *.json
 /__pycache__
 /test file.py
-/debug.log
+*.log
