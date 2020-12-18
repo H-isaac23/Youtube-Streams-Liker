@@ -1,0 +1,7 @@
+*.txt
+/.idea/
+/venv/
+*.json
+/__pycache__
+/test file.py
+/debug.log
