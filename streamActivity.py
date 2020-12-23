@@ -1,19 +1,15 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import requests
 
-def streamUpdate(channelId):
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--profile-directory=Default')
+#UCOyYb1c43VlX9rc_lT6NKQw
+#UCvaTdHTWBGv3MKj3KVqJVCw
 
-    PATH = 'C:\Program Files (x86)\chromedriver.exe'
-    driver = webdriver.Chrome(options=options, executable_path=PATH)
-    streamSign = '{"text":" watching"}'
+def is_streaming(channel_id):
+    channel_link = 'https://www.youtube.com/channel/' + channel_id
+    response = requests.get(channel_link)
 
-    driver.get("https://www.youtube.com/channel/{0}".format(channelId))
+    #soup = BeautifulSoup(response, 'lxml')
 
-    html = driver.page_source
-    if streamSign in html:
-        return True
-    else:
-        return False
+    return '{"text":" watching"}' in response.text
+
+print(is_streaming('UCvaTdHTWBGv3MKj3KVqJVCw'))
+
