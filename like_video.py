@@ -9,7 +9,7 @@ from random import randint
 from time import sleep
 import os
 
-def get_video_link(channel_url):
+def get_stream_link(channel_url):
     PATH = 'C:/Program Files (x86)/geckodriver.exe'
     options = FirefoxOptions()
     options.add_argument('--headless')
@@ -24,7 +24,9 @@ def get_video_link(channel_url):
         )
         video_link = video_url.get_attribute('href')
     except:
+        print("XPATH not found")
         driver.quit()
+        return None
 
     driver.quit()
     return video_link
@@ -48,9 +50,8 @@ def like_video(video_url):
         sleep(randint(4,7))
         email.send_keys(EMAIL)
         email.send_keys(Keys.RETURN)
-        print('Email Successfully Entered')
     except:
-        print('There is a problem idk lmao, driver quitting')
+        print('There is a problem in the email idk lmao, driver quitting')
         driver.quit()
 
     sleep(5)
@@ -63,7 +64,6 @@ def like_video(video_url):
         sleep(3)
         password.send_keys(PASSWORD)
         password.send_keys(Keys.RETURN)
-        print('Password Successfully Entered')
     except:
         print("Password textbox not found")
         driver.quit()
@@ -84,6 +84,3 @@ def like_video(video_url):
 
     driver.quit()
 
-#like_video('https://www.youtube.com/watch?v=Tf3t9oVHrB4')
-#is_liked('https://www.youtube.com/watch?v=Go2JRGbhlE0')
-# print(get_video_link('https://www.youtube.com/channel/UC1opHUrw8rvnsadT-iGp7Cg'))

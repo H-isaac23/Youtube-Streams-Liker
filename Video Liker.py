@@ -1,9 +1,24 @@
-from like_video import like_video, get_video_link
+from like_video import like_video, get_stream_link
 from streamActivity import is_streaming
 
-channelId = input("Channel Id:")
-channel_link = 'https://www.youtube.com/channel/' + channelId
+with open('channel ids.txt', 'r') as f:
+    for line in f.readlines():
+        channel_id = line[:24]
+        channel_link = 'https://www.youtube.com/channel/' + channel_id
 
-if is_streaming(channelId):
-    video_link = get_video_link(channel_link)
-    like_video(video_link)
+        # check if streaming
+        if is_streaming(channel_link):
+            channel_name = line[24:-1]
+            print(channel_name)
+            # Get the stream link
+            video_link = get_stream_link(channel_link)
+
+            # Open files
+            link_read = open('video links.txt', 'r')
+            link_write = open('video links.txt', 'a')
+
+            if video_link in link_read.read():
+                print(f'Video from {channel_name} is already liked.')
+            else:
+                like_video(video_link)
+                link_write.write(video_link + '\n')
