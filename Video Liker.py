@@ -1,9 +1,9 @@
-from like_video import like_video
-from streamActivity import streamUpdate
+from like_video import like_video, get_video_link
+from streamActivity import is_streaming
 
 channelId = input("Channel Id:")
+channel_link = 'https://www.youtube.com/channel/' + channelId
 
-if streamUpdate(channelId):
-    channelId = "https://www.youtube.com/channel/" + channelId + "/live"
-    print(channelId)
-    like_video(channelId)
+if is_streaming(channelId):
+    video_link = get_video_link(channel_link)
+    like_video(video_link)
