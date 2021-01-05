@@ -1,5 +1,6 @@
 from like_video import like_video, get_stream_link
 from streamActivity import is_streaming
+import time
 
 with open('channel ids.txt', 'r') as f:
     for line in f.readlines():
@@ -22,3 +23,9 @@ with open('channel ids.txt', 'r') as f:
             else:
                 like_video(video_link)
                 link_write.write(video_link + '\n')
+
+        t = time.localtime()
+        current_time = time.strftime("%H:%M:%S", t)
+
+print(f"Time finished: {current_time}")
+
