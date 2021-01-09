@@ -1,6 +1,6 @@
-# Youtube-video-liker
+# Youtube-stream-liker
 
-This is a project using python which looks through a file with channel IDs and checks whether a stream is on or not. If there is a stream, the script will like the video with the email and password in the environment variables.
+This is a project using python which looks through a file with channel IDs and checks whether a stream from that channel is active or not. If there is a stream, the script will like the video with the email and password in the environment variables.
 
 ## How is it used?
 
