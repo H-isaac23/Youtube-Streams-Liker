@@ -9,27 +9,41 @@ from random import randint
 from time import sleep
 import os
 
-def get_stream_link(channel_url):
+def get_stream_link(channel_urls):
     PATH = 'C:/Program Files (x86)/geckodriver.exe'
     options = FirefoxOptions()
     options.add_argument('--headless')
     options.add_argument('--mute-audio')
     driver = webdriver.Firefox(options=options, executable_path=PATH)
-    video_link = None
-    driver.get(channel_url+'/videos')
+    video_links = {}
+    # link_read = open('video links.txt', 'r')
+    # link_write = open('video links.txt', 'a+')
 
-    try:
-        video_url = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
-        )
-        video_link = video_url.get_attribute('href')
-    except:
-        print("XPATH not found")
-        driver.quit()
-        return None
+    for name, channel_link in channel_urls.items():
+        driver.get(channel_link+'/videos')
+
+        try:
+            video_url = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
+            )
+            link = video_url.get_attribute('href')
+
+            with open('video links.txt', 'r') as link_read:
+                if link in link_read.read():
+                    print(f'Video from {name} is already liked.')
+                elif link not in link_read.read():
+                    with open('video links.txt', 'a') as link_write:
+                        video_links[name] = link
+                        link_write.write(link + '\n')
+                        print(f'Video stream of {name} added to queue')
+
+        except:
+            print("XPATH not found")
+            driver.quit()
+            return None
 
     driver.quit()
-    return video_link
+    return video_links
 
 def like_video(video_urls):
 
@@ -86,4 +100,3 @@ def like_video(video_urls):
             driver.quit()
 
     driver.quit()
-
