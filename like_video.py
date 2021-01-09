@@ -31,7 +31,9 @@ def get_stream_link(channel_url):
     driver.quit()
     return video_link
 
-def like_video(video_url):
+def like_video(video_urls):
+
+    print("Logging into google...")
 
     option = FirefoxOptions()
     option.add_argument('--headless')
@@ -69,18 +71,19 @@ def like_video(video_url):
         driver.quit()
 
     sleep(5)
-    driver.get(video_url)
 
-    try:
-        button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a'))
-        )
-        ActionChains(driver).move_to_element(button).click(button).perform()
-        print('Video successfully liked')
-        sleep(5)
-    except:
-        print('Xpath not found')
-        driver.quit()
+    for name, link in video_urls.items():
+        driver.get(link)
+        try:
+            button = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a'))
+            )
+            ActionChains(driver).move_to_element(button).click(button).perform()
+            print(f'Video from {name} successfully liked.')
+            sleep(5)
+        except:
+            print('Xpath not found')
+            driver.quit()
 
     driver.quit()
 
