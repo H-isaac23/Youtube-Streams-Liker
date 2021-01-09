@@ -28,7 +28,11 @@ with open('channel ids.txt', 'r') as f:
                 link_write.write(video_link + '\n')
 
     print()
-    like_video(video_links)
+    if video_links == {}:
+        print("All streams on the channels you provided are already liked.")
+    else:
+        like_video(video_links)
+
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
 
