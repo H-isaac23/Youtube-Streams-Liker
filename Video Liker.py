@@ -2,6 +2,8 @@ from like_video import like_video, get_stream_link
 from streamActivity import is_streaming
 import time
 
+start_time = time.time()
+
 with open('channel ids.txt', 'r') as f:
     video_links = {}
     currently_streaming = {}
@@ -33,4 +35,9 @@ with open('channel ids.txt', 'r') as f:
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
 
+total_time = time.time() - start_time
+with open('times.txt', 'a') as times:
+    times.write(str(total_time) + ' seconds\n')
+
 print(f"Time finished: {current_time}")
+print("Total time elapsed: %.2f seconds." % total_time)
