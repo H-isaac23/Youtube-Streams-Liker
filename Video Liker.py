@@ -8,7 +8,7 @@ with open('channel ids.txt', 'r') as f:
     video_links = {}
     currently_streaming = {}
 
-    print("Checking for streams...")
+    print("Checking for streams...\n")
 
     for line in f.readlines():
         channel_id = line[:24]
