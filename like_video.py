@@ -16,8 +16,6 @@ def get_stream_link(channel_urls):
     options.add_argument('--mute-audio')
     driver = webdriver.Firefox(options=options, executable_path=PATH)
     video_links = {}
-    # link_read = open('video links.txt', 'r')
-    # link_write = open('video links.txt', 'a+')
 
     for name, channel_link in channel_urls.items():
         driver.get(channel_link+'/videos')
@@ -47,7 +45,7 @@ def get_stream_link(channel_urls):
 
 def like_video(video_urls):
 
-    print("Logging into google...")
+    print("Logging into google...\n")
 
     option = FirefoxOptions()
     option.add_argument('--headless')
