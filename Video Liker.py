@@ -4,6 +4,10 @@ import time
 
 with open('channel ids.txt', 'r') as f:
     video_links = {}
+    currently_streaming = {}
+
+    print("Checking for streams...")
+
     for line in f.readlines():
         channel_id = line[:24]
         channel_link = 'https://www.youtube.com/channel/' + channel_id
@@ -11,24 +15,17 @@ with open('channel ids.txt', 'r') as f:
         # check if streaming
         if is_streaming(channel_link):
             channel_name = line[27:-1]
-            print(channel_name)
+            currently_streaming[channel_name] = channel_link
 
-            # Get the stream link
-            video_link = get_stream_link(channel_link)
-
-            # Open files
-            link_read = open('video links.txt', 'r')
-            link_write = open('video links.txt', 'a')
-
-            if video_link in link_read.read():
-                print(f'Video from {channel_name} is already liked.')
-            else:
-                print('Video link added to queue.')
-                video_links[channel_name] = video_link
-                link_write.write(video_link + '\n')
+    # Get the stream links
+    video_links = get_stream_link(currently_streaming)
 
     print()
-    if video_links == {}:
+
+    if video_links is None:
+        print("XPath Exception: There seems to be a problem with your internet connection.")
+        print("Troubleshoot your internet and restart the program.")
+    elif video_links == {}:
         print("All streams on the channels you provided are already liked.")
     else:
         like_video(video_links)
