@@ -16,6 +16,7 @@ def get_stream_link(channel_urls):
     options.add_argument('--mute-audio')
     driver = webdriver.Firefox(options=options, executable_path=PATH)
     video_links = {}
+    num_to_be_liked = 0
 
     for name, channel_link in channel_urls.items():
         driver.get(channel_link+'/videos')
@@ -30,6 +31,7 @@ def get_stream_link(channel_urls):
                 if link in link_read.read():
                     print(f'Video from {name} is already liked.')
                 elif link not in link_read.read():
+                    num_to_be_liked += 1
                     with open('video links.txt', 'a') as link_write:
                         video_links[name] = link
                         link_write.write(link + '\n')
@@ -41,7 +43,7 @@ def get_stream_link(channel_urls):
             return None
 
     driver.quit()
-    return video_links
+    return video_links, num_to_be_liked
 
 def like_video(video_urls):
 
