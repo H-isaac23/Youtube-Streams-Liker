@@ -1,6 +1,8 @@
 from like_video import like_video, get_stream_link
 from streamActivity import is_streaming
 from collections import OrderedDict
+from datetime import date
+import os
 import time
 import csv
 
@@ -18,6 +20,7 @@ data['Time Started'] = time_started
 number_of_active_streams = 0
 number_of_to_be_liked_streams = 0
 streams_liked = []
+video_ids = []
 
 with open('channel ids.txt', 'r') as f:
     video_links = {}
@@ -51,20 +54,40 @@ with open('channel ids.txt', 'r') as f:
     else:
         like_video(video_links)
 
+# Gets the video ids
+for link in streams_liked:
+    video_ids.append(link[32:])
+
+# Time when the program ended
 te = time.localtime()
 time_ended = time.strftime("%H:%M:%S", te)
 data['Time Ended'] = time_ended
 
+# Total time elapsed
 total_time = time.time() - start_time
 data['Time elapsed'] = total_time
-# with open('times.txt', 'a') as times:
-#     times.write(str(total_time) + ' seconds\n')
 
+# Stream datas
 data['No. of active streams'] = number_of_active_streams
 data['No. of to-be-liked streams'] = number_of_to_be_liked_streams
-data['Streams liked'] = ', '.join(streams_liked)
+data['Streams liked'] = ', '.join(video_ids)
 
-with open('stream_data.csv', 'a', newline='') as csv_file:
+# File naming
+today = date.today()
+d = today.strftime("%m/%d/%y")
+hyphenated_date = '-'.join(d.split('/'))
+filename = f'stream_data {hyphenated_date}.csv'
+
+# Check if a file exists
+if not os.path.exists(filename):
+    with open(filename, 'a', newline='') as csv_file:
+        fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started',
+                      'Time Ended',
+                      'Streams liked']
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
+
+with open(filename, 'a', newline='') as csv_file:
     fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started', 'Time Ended',
                   'Streams liked']
     csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
