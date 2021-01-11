@@ -5,4 +5,4 @@
 /test file.py
 *.log
 /video links.txt
-/times.txt
+/*.csv
