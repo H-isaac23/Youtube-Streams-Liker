@@ -1,5 +1,4 @@
-from like_video import like_video, get_stream_link
-from streamActivity import is_streaming
+from like_video import like_video, get_stream_link, is_streaming
 from collections import OrderedDict
 from datetime import date
 import os

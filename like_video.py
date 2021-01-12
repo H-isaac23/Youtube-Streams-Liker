@@ -8,6 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from random import randint
 from time import sleep
 import os
+import requests
 
 def get_stream_link(channel_urls):
     PATH = 'C:/Program Files (x86)/geckodriver.exe'
@@ -100,3 +101,7 @@ def like_video(video_urls):
             driver.quit()
 
     driver.quit()
+
+def is_streaming(channel_url):
+    response = requests.get(channel_url).text
+    return '{"text":" watching"}' in response
