@@ -5,8 +5,6 @@ import os
 import time
 import csv
 
-time.sleep(300)
-
 start_time = time.time()
 
 # data for csv
