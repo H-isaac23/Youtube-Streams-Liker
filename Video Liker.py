@@ -5,6 +5,8 @@ import os
 import time
 import csv
 
+time.sleep(300)
+
 start_time = time.time()
 
 # data for csv
@@ -94,3 +96,9 @@ with open(filename, 'a', newline='') as csv_file:
 
 print(f"Time finished: {time_ended}")
 print("Total time elapsed: %.2f seconds." % total_time)
+
+'''
+To Do:
+Make the program send the csv files on an email
+Modify the program to make xlsx files instead of csv files
+'''
