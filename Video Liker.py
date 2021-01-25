@@ -99,4 +99,5 @@ print("Total time elapsed: %.2f seconds." % total_time)
 To Do:
 Make the program send the csv files on an email
 Modify the program to make xlsx files instead of csv files
+Use a database
 '''
