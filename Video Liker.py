@@ -78,15 +78,15 @@ hyphenated_date = '-'.join(d.split('/'))
 filename = f'stream_data {hyphenated_date}.csv'
 
 # Check if a file exists
-if not os.path.exists(filename):
-    with open(filename, 'a', newline='') as csv_file:
+if not os.path.exists(f"Stream data/{filename}"):
+    with open(f"Stream data/{filename}", 'a', newline='') as csv_file:
         fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started',
                       'Time Ended',
                       'Streams liked']
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         csv_writer.writeheader()
 
-with open(filename, 'a', newline='') as csv_file:
+with open(f"Stream data/{filename}", 'a', newline='') as csv_file:
     fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started', 'Time Ended',
                   'Streams liked']
     csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
