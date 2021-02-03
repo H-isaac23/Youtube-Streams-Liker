@@ -100,4 +100,5 @@ To Do:
 Make the program send the csv files on an email
 Modify the program to make xlsx files instead of csv files
 Use a database
+Check "Liked" videos using web scraping
 '''
