@@ -14,7 +14,7 @@ To start liking streams, simply run the python file and it will check the channe
 
 ## Contribution
 
-Any ideas related to a youtube video will be entertained and implemented in the code if decided. For the code, I will be doing it myself but others can suggest ideas as to how to do it.
+Any ideas related to a youtube video will be entertained and implemented in the code if decided. For the code, I will be doing it myself but others can suggest ideas on how to do it.
 
 ## License
 
