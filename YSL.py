@@ -33,14 +33,15 @@ class StreamLiker(YSL):
         super(StreamLiker, self).__init__(channels_path)
         self.start_time = None
         self.time_started = None
+        self.total_time_elapsed = 0
+        self.time_ended = None
+
         self.currently_streaming = {}
         self.streams_liked = {}
         self.video_ids = []
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
-        self.total_time_elapsed = 0
-        self.time_ended = None
 
     def get_start_time(self):
         self.start_time = time.time()
@@ -69,8 +70,7 @@ class StreamLiker(YSL):
         options.add_argument('--headless')
         options.add_argument('--mute-audio')
         driver = webdriver.Firefox(options=options, executable_path=path)
-        # num_to_be_liked = 0
-
+        
         for name, channel_link in self.currently_streaming.items():
             driver.get(channel_link + '/videos')
 
@@ -88,7 +88,6 @@ class StreamLiker(YSL):
                         self.number_of_to_be_liked_streams += 1
                         self.streams_liked[name] = link
                         self.video_ids.append(link[32:])
-                        # num_to_be_liked += 1
                         with open('video links.txt', 'a') as link_write:
                             link_write.write(link + '\n')
                             print(f'Video stream of {name} added to queue')
@@ -208,10 +207,6 @@ class StreamLiker(YSL):
         self.get_end_time()
         self.append_data_on_file()
 
-
-# ysl = YSL('channel ids.txt')
-# ysl.get_channels()
-# print(ysl.channels)
 
 sl = StreamLiker('channel ids.txt')
 sl.start_liking()
