@@ -38,7 +38,7 @@ class StreamLiker(YSL):
             response = requests.get(channel_url).text
             stream_active = '{"text":" watching"}' in response
             if stream_active:
-                self.currently_streaming[name] = self.channels[name]
+                self.currently_streaming[name] = channel_url
 
 
 # ysl = YSL('channel ids.txt')
