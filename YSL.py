@@ -1,3 +1,4 @@
+import requests
 import os
 from datetime import date
 import time
@@ -21,12 +22,22 @@ class StreamLiker(YSL):
         super(StreamLiker, self).__init__(channels_path)
         self.start_time = None
         self.time_started = None
+        self.currently_streaming = {}
         self.stream_data = OrderedDict()
+        self.number_of_active_streams = 0
+        self.number_of_to_be_liked_streams = 0
 
     def get_start_time(self):
         self.start_time = time.time()
         self.time_started = time.strftime("%H:%M:%S", time.localtime())
         self.stream_data['Time Started'] = self.time_started
+
+    def is_streaming(self):
+        for name in self.channels.keys():
+            channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
+            response = requests.get(channel_url).text
+            print('{"text":" watching"}' in response)
+            self.currently_streaming[name] = self.channels[name]
 
 
 # ysl = YSL('channel ids.txt')
@@ -35,4 +46,6 @@ class StreamLiker(YSL):
 
 sl = StreamLiker('channel ids.txt')
 sl.get_channels()
-print(sl.channels)
+sl.get_start_time()
+sl.is_streaming()
+
