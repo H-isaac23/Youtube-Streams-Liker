@@ -36,8 +36,9 @@ class StreamLiker(YSL):
         for name in self.channels.keys():
             channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
             response = requests.get(channel_url).text
-            print('{"text":" watching"}' in response)
-            self.currently_streaming[name] = self.channels[name]
+            stream_active = '{"text":" watching"}' in response
+            if stream_active:
+                self.currently_streaming[name] = self.channels[name]
 
 
 # ysl = YSL('channel ids.txt')
@@ -48,4 +49,5 @@ sl = StreamLiker('channel ids.txt')
 sl.get_channels()
 sl.get_start_time()
 sl.is_streaming()
+print(sl.currently_streaming)
 
