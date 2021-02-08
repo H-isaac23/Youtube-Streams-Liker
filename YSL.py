@@ -39,7 +39,7 @@ class StreamLiker(YSL):
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
-        self.total_time_elapsed = None
+        self.total_time_elapsed = 0
         self.time_ended = None
 
     def get_start_time(self):
@@ -50,7 +50,8 @@ class StreamLiker(YSL):
     def is_streaming(self):
 
         ##### Status Code
-        print('Checking for streams')
+        print('Checking for streams...')
+        print()
 
         for name in self.channels.keys():
             channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
@@ -100,6 +101,7 @@ class StreamLiker(YSL):
         self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
         self.stream_data['Streams liked'] = ', '.join(self.streams_liked.values())
         driver.quit()
+        print()
 
     def like_videos(self):
 
@@ -163,10 +165,11 @@ class StreamLiker(YSL):
                     driver.quit()
 
             driver.quit()
+        print()
 
     def get_end_time(self):
-        time_ended = time.strftime("%H:%M:%S", time.localtime())
-        self.stream_data['Time Ended'] = time_ended
+        self.time_ended = time.strftime("%H:%M:%S", time.localtime())
+        self.stream_data['Time Ended'] = self.time_ended
         self.total_time_elapsed = time.time() - self.start_time
         self.stream_data['Time elapsed'] = self.total_time_elapsed
 
@@ -193,17 +196,22 @@ class StreamLiker(YSL):
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             csv_writer.writerow(self.stream_data)
 
+        print(f"Time finished: {self.time_ended}")
+        print("Total time elapsed: %.2f seconds." % self.total_time_elapsed)
+
+    def start_liking(self):
+        self.get_start_time()
+        self.get_channels()
+        self.is_streaming()
+        self.get_stream_links()
+        self.like_videos()
+        self.get_end_time()
+        self.append_data_on_file()
+
 
 # ysl = YSL('channel ids.txt')
 # ysl.get_channels()
 # print(ysl.channels)
 
 sl = StreamLiker('channel ids.txt')
-sl.get_channels()
-sl.get_start_time()
-sl.is_streaming()
-# print(sl.currently_streaming)
-sl.get_stream_links()
-sl.like_videos()
-sl.get_end_time()
-sl.append_data_on_file()
+sl.start_liking()
