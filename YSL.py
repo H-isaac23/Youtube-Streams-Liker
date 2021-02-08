@@ -30,7 +30,8 @@ class StreamLiker(YSL):
         self.start_time = None
         self.time_started = None
         self.currently_streaming = {}
-        self.streams_liked = []
+        self.streams_liked = {}
+        self.video_ids = []
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
@@ -65,24 +66,23 @@ class StreamLiker(YSL):
                     EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
                 )
                 link = video_url.get_attribute('href')
+
                 with open('video links.txt', 'r') as link_read:
                     if link in link_read.read():
                         print(f'Video from {name} is already liked.')
                     elif link not in link_read.read():
                         self.number_of_to_be_liked_streams += 1
+                        self.streams_liked[name] = link
+                        self.video_ids.append(link[32:])
                         # num_to_be_liked += 1
                         with open('video links.txt', 'a') as link_write:
-                            self.streams_liked.append(link)
-                            link_write.write(link + '\n')
+                            # link_write.write(link + '\n')
                             print(f'Video stream of {name} added to queue')
 
             except:
                 print("XPATH not found")
                 driver.quit()
                 return None
-
-        print(self.streams_liked)
-        print(self.number_of_to_be_liked_streams)
 
         driver.quit()
 
