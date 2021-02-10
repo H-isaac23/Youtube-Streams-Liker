@@ -38,10 +38,12 @@ class StreamLiker(YSL):
 
         self.currently_streaming = {}
         self.streams_liked = {}
+        self.streams_liked_id = []
         self.video_ids = []
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
+        self.date = None
 
     def get_start_time(self):
         self.start_time = time.time()
@@ -98,7 +100,11 @@ class StreamLiker(YSL):
                 return None
 
         self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
-        self.stream_data['Streams liked'] = ', '.join(self.streams_liked.values())
+
+        for link in self.streams_liked.values():
+            self.streams_liked_id.append(link[32:])
+
+        self.stream_data['Streams liked'] = ', '.join(self.streams_liked_id)
         driver.quit()
         print()
 
@@ -175,8 +181,8 @@ class StreamLiker(YSL):
     def append_data_on_file(self):
         # File naming
         today = date.today()
-        d = today.strftime("%m/%d/%y")
-        hyphenated_date = '-'.join(d.split('/'))
+        self.date = today.strftime("%m/%d/%y")
+        hyphenated_date = '-'.join(self.date.split('/'))
         filename = f'stream_data {hyphenated_date}.csv'
 
         # Check if a file exists
@@ -198,6 +204,10 @@ class StreamLiker(YSL):
         print(f"Time finished: {self.time_ended}")
         print("Total time elapsed: %.2f seconds." % self.total_time_elapsed)
 
+    def append_data_on_db(self):
+        print(self.stream_data["Time Started"])
+
+
     def start_liking(self):
         self.get_start_time()
         self.get_channels()
@@ -206,6 +216,7 @@ class StreamLiker(YSL):
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file()
+        self.append_data_on_db()
 
 
 sl = StreamLiker('channel ids.txt')
