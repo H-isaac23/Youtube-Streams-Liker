@@ -8,6 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from collections import OrderedDict
 from random import randint
 from datetime import date
+import mysql.connector
 import csv
 import requests
 import os
@@ -205,8 +206,24 @@ class StreamLiker(YSL):
         print("Total time elapsed: %.2f seconds." % self.total_time_elapsed)
 
     def append_data_on_db(self):
-        print(self.stream_data["Time Started"])
+        tel = self.stream_data["Time elapsed"]
+        nas = self.stream_data["No. of active streams"]
+        nls = self.stream_data["No. of to-be-liked streams"]
+        ts = self.stream_data["Time Started"]
+        te = self.stream_data["Time Ended"]
+        d = self.date
 
+        db = mysql.connector.connect(
+            user="isaac",
+            host="localhost",
+            passwd="DevAisha23!",
+            database="YSL"
+        )
+
+        my_cursor = db.cursor()
+        my_cursor.execute("INSERT INTO stream_data(Time_Elapsed, Num_active_streams, Num_liked_streams, Time_Started, Time_Ended, Date) VALUES(%s,%s,%s,%s,%s,%s)",
+                          (tel, nas, nls, ts, te, d))
+        db.commit()
 
     def start_liking(self):
         self.get_start_time()
