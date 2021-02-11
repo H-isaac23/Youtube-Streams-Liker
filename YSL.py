@@ -20,6 +20,7 @@ class YSL:
         self.channels_path = channels_path
         self.status_codes = {1: "Checking for streams...", 2: "Logging into YouTube..."}
         self.channels = {}
+        self.get_channels()
 
     def get_channels(self):
         with open(self.channels_path, 'r') as channels:
@@ -208,7 +209,7 @@ class StreamLiker(YSL):
         print(f"Time finished: {self.time_ended}")
         print("Total time elapsed: %.2f seconds." % self.total_time_elapsed)
 
-    def append_data_on_db(self):
+    def append_data_on_db(self, user, host, passwd, database):
         tel = self.stream_data["Time elapsed"]
         nas = self.stream_data["No. of active streams"]
         nls = self.stream_data["No. of to-be-liked streams"]
@@ -217,10 +218,10 @@ class StreamLiker(YSL):
         d = self.date
 
         db = mysql.connector.connect(
-            user="isaac",
-            host="localhost",
-            passwd="DevAisha23!",
-            database="YSL"
+            user=user,
+            host=host,
+            passwd=passwd,
+            database=database
         )
 
         my_cursor = db.cursor()
@@ -228,9 +229,8 @@ class StreamLiker(YSL):
                           (tel, nas, nls, ts, te, d))
         db.commit()
 
-    def start_liking(self):
+    def start_liking_with_data(self):
         self.get_start_time()
-        self.get_channels()
         self.is_streaming()
         self.get_stream_links()
         self.like_videos()
@@ -240,6 +240,6 @@ class StreamLiker(YSL):
 email = os.environ.get('TEST_EMAIL')
 passwd = os.environ.get('TEST_PASS')
 sl = StreamLiker('channel ids.txt', email, passwd)
-sl.start_liking()
-sl.append_data_on_db()
+sl.start_liking_with_data()
+sl.append_data_on_db("isaac", "localhost", "DevAisha23!", "YSL")
 sl.append_data_on_file()
