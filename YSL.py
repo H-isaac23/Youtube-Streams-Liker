@@ -235,10 +235,11 @@ class StreamLiker(YSL):
         self.get_stream_links()
         self.like_videos()
         self.get_end_time()
-        self.append_data_on_file()
-        self.append_data_on_db()
+
 
 email = os.environ.get('TEST_EMAIL')
 passwd = os.environ.get('TEST_PASS')
 sl = StreamLiker('channel ids.txt', email, passwd)
 sl.start_liking()
+sl.append_data_on_db()
+sl.append_data_on_file()
