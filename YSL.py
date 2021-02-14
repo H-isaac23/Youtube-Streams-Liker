@@ -225,6 +225,15 @@ class StreamLiker(YSL):
         )
 
         my_cursor = db.cursor()
+        my_cursor.execute("""CREATE TABLE IF NOT EXISTS stream_data(NID INT PRIMARY KEY AUTO_INCREMENT, 
+                                                                    Time_Elapsed DECIMAL(6, 2), 
+                                                                    Num_active_streams SMALLINT UNSIGNED, 
+                                                                    Num_liked_streams SMALLINT UNSIGNED, 
+                                                                    Time_Started VARCHAR(10), 
+                                                                    Time_Ended VARCHAR(10), 
+                                                                    Streams_Liked SMALLINT UNSIGNED, 
+                                                                    Date VARCHAR(15))""")
+
         my_cursor.execute("""INSERT INTO stream_data(Time_Elapsed, 
                                                      Num_active_streams, 
                                                      Num_liked_streams, 
@@ -235,17 +244,17 @@ class StreamLiker(YSL):
                           (tel, nas, nls, ts, te, d))
         db.commit()
 
-    def start_liking_with_data(self):
+    def start_liking_with_data(self, user, host, passwd, db):
         self.get_start_time()
         self.is_streaming()
         self.get_stream_links()
         self.like_videos()
         self.get_end_time()
+        self.append_data_on_file()
+        self.append_data_on_db(user, host, passwd, db)
 
 
 email = os.environ.get('TEST_EMAIL')
 passwd = os.environ.get('TEST_PASS')
 sl = StreamLiker('channel ids.txt', email, passwd)
-sl.start_liking_with_data()
-sl.append_data_on_file()
-sl.append_data_on_db("isaac", "localhost", "DevAisha23!", "YSL")
+sl.start_liking_with_data("isaac", "localhost", "DevAisha23!", "YSL")
