@@ -131,7 +131,7 @@ class StreamLiker(YSL):
             PASSWORD = self.passwd
 
             driver.get(
-                'https://accounts.google.com/signin/v2/identifier?hl=en&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
+                """https://accounts.google.com/signin/v2/identifier?hl=en&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin""")
             try:
                 email = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="identifierId"]'))
@@ -225,7 +225,13 @@ class StreamLiker(YSL):
         )
 
         my_cursor = db.cursor()
-        my_cursor.execute("INSERT INTO stream_data(Time_Elapsed, Num_active_streams, Num_liked_streams, Time_Started, Time_Ended, Date) VALUES(%s,%s,%s,%s,%s,%s)",
+        my_cursor.execute("""INSERT INTO stream_data(Time_Elapsed, 
+                                                     Num_active_streams, 
+                                                     Num_liked_streams, 
+                                                     Time_Started, 
+                                                     Time_Ended, 
+                                                     Date) 
+                                                     VALUES(%s,%s,%s,%s,%s,%s)""",
                           (tel, nas, nls, ts, te, d))
         db.commit()
 
