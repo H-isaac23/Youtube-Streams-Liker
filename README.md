@@ -5,6 +5,10 @@ This is a project using python which looks through a file with channel IDs and c
 ## Note(Project Status)
 The project is now currently on the phase of creating a GUI, although I may not have enough time to do it in the coming weeks because of school and other side projects that I want to do. As of now, the program is already complete based on what I had originally planned, though I might pick this up again in the future if I want to learn about GUIs.
 
+## Libraries Used
+
+-Selenium, requests, os, random, time, collections, mysql-connector-python
+
 ## How is it used?
 
 ### Before making the code:
@@ -82,6 +86,8 @@ sl.append_data_on_file()
 The method needs the following arguments: user, host, password, database
 As of the moment, the user of this program might have to configure the code inside the *append_data_on_db* method in order to select the table on which the user will append the data to.
 ```python
+# Legend: ******* - put table name here
+
 def append_data_on_db(self, user, host, passwd, database):
     tel = self.stream_data["Time elapsed"]
     nas = self.stream_data["No. of active streams"]
@@ -98,7 +104,22 @@ def append_data_on_db(self, user, host, passwd, database):
     )
 
     my_cursor = db.cursor()
-    my_cursor.execute("INSERT INTO [PUT TABLE NAME HERE](Time_Elapsed, Num_active_streams, Num_liked_streams, Time_Started, Time_Ended, Date) VALUES(%s,%s,%s,%s,%s,%s)",
+    my_cursor.execute("""CREATE TABLE IF NOT EXISTS *******(NID INT PRIMARY KEY AUTO_INCREMENT, 
+                                                            Time_Elapsed DECIMAL(6, 2), 
+                                                            Num_active_streams SMALLINT UNSIGNED, 
+                                                            Num_liked_streams SMALLINT UNSIGNED, 
+                                                            Time_Started VARCHAR(10), 
+                                                            Time_Ended VARCHAR(10), 
+                                                            Streams_Liked SMALLINT UNSIGNED, 
+                                                            Date VARCHAR(15))""")
+
+    my_cursor.execute("""INSERT INTO *******(Time_Elapsed, 
+                                             Num_active_streams, 
+                                             Num_liked_streams, 
+                                             Time_Started, 
+                                             Time_Ended, 
+                                             Date) 
+                                             VALUES(%s,%s,%s,%s,%s,%s)""",
                       (tel, nas, nls, ts, te, d))
     db.commit()
 ```
@@ -113,13 +134,38 @@ database = 'YSL'
 sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database)
 ```
 
-## Libraries Used
+### start_liking_with_data(self, user, host, passwd, db)
+This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
+```python
+def start_liking_with_data(self, user, host, passwd, db):
+    self.get_start_time()
+    self.is_streaming()
+    self.get_stream_links()
+    self.like_videos()
+    self.get_end_time()
+    self.append_data_on_file()
+    self.append_data_on_db(user, host, passwd, db)
+```
+The user then needs to pass the needed arguments if the user wants to append the data onto their own database.
+Example:
+```python
+from YSL import StreamLiker
 
--Selenium, requests, os, random, time, collections
+email = 'yt@test.com'
+yt_passwd = 'fubukibestfriend'
+user = 'root'
+host = 'localhost'
+db_passwd = 'baqua'
+db = 'YSL'
+
+sl = StreamLiker('channel ids.txt', email, yt_passwd)
+sl.start_liking_with_data(user, host, db_passwd, db)
+```
 
 ## Contribution
 
-Any ideas related to a youtube video will be entertained and implemented in the code if decided. For the code, I will be doing it myself but others can suggest ideas on how to do it.
+Any ideas related to a youtube video will be entertained and implemented in the code if decided, just put the ideas on an issue. For the code, I will be doing it myself but others can suggest ideas on how to do it.
+Others can also suggest ideas on how a certain part of the code can be done a lot more efficient, put those also on the issues tab.
 
 ## License
 
