@@ -52,6 +52,7 @@ sl.get_stream_links()
 ```
 
 This will also store the links in a dictionary.
+This will also store the links in a text file called "video links.txt" with the purpose of keeping track of the videos that the program has already liked.
 
 ### 4.
 Now that we have the video links, we will now like them using a selenium webdriver. Simply call the method like_videos() to get started.
