@@ -12,7 +12,16 @@ The project is now currently on the phase of creating a GUI, although I may not 
 ## How is it used?
 
 ### Before making the code:
-Copy the YSL.py file into your repository.
+-Put the channel IDs and the channel name(or the owner's name, it's up to you) on a text file(a sample text file with the channel IDs is available above). The format of is "[Channel ID] - [Name]".(You have to do it that way, deal with it lmao)
+Example:
+```
+UCdn5BQ06XqgXoAxIhbqw5Rg - Fubuki
+UCQ0UDLQCjY0rmuxCDE38FGg - Matsuri
+UCFTLzh12_nrtzqBPsTCqenA - Aki
+UCD8HOxPs4Xvsm8H0ZxXGiBw - Mel
+UC1CfXB_kRs3C-zaeTG3oGyg - Haato
+```
+-Copy the YSL.py file into your repository.
 
 ### 1. (Using the YSL.py File)
 Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
