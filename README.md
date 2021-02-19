@@ -13,6 +13,7 @@ The project is now currently on the phase of creating a GUI, although I may not 
 
 ### Before making the code:
 -Put the channel IDs and the channel name(or the owner's name, it's up to you) on a text file(a sample text file with the channel IDs is available above). The format of is "[Channel ID] - [Name]".(You have to do it that way, deal with it lmao)
+
 Example:
 ```
 UCdn5BQ06XqgXoAxIhbqw5Rg - Fubuki
