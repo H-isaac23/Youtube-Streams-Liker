@@ -18,5 +18,4 @@ def like():
     return render_template('like.html')
 
 if __name__ == '__main__':
-    print("Hi")
     app.run(debug=True, host='192.168.1.10')
