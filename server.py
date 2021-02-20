@@ -15,6 +15,7 @@ def index():
 @app.route('/like')
 def like():
     sl.start_liking_with_data("isaac", "localhost", "DevAisha23!", "YSL")
+    sl.clear_data()
     return render_template('like.html')
 
 if __name__ == '__main__':

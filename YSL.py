@@ -50,6 +50,21 @@ class StreamLiker(YSL):
         self.email = email
         self.passwd = passwd
 
+    def clear_data(self):
+        self.start_time = None
+        self.time_started = None
+        self.total_time_elapsed = 0
+        self.time_ended = None
+
+        self.currently_streaming = {}
+        self.streams_liked = {}
+        self.streams_liked_id = []
+        self.video_ids = []
+        self.stream_data = OrderedDict()
+        self.number_of_active_streams = 0
+        self.number_of_to_be_liked_streams = 0
+        self.date = None
+
     def get_start_time(self):
         self.start_time = time.time()
         self.time_started = time.strftime("%H:%M:%S", time.localtime())
