@@ -7,7 +7,7 @@ The project is now currently on the phase of creating a GUI, although I may not 
 
 ## Libraries Used
 
--Selenium, requests, os, random, time, collections, mysql-connector-python
+-Selenium, requests, os, random, time, collections, mysql-connector-python, flask
 
 ## How is it used?
 
