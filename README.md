@@ -64,6 +64,20 @@ sl.like_videos()
 And with that, the streams of the youtubers that you want to like can now be done automatically. 
 The user can then tinker with the code, like putting the above block of code into a for loop so that the script will regularly check the provided channels whether they are streaming or not.
 
+Full Code:
+```python
+from YSL import StreamLiker
+
+email = 'email@test.com'
+passwd = 'qwerty'
+c_id = 'channels id.txt'
+sl = StreamLiker(c_id, email, passwd)
+
+sl.is_streaming()
+sl.get_stream_links()
+sl.like_videos()
+```
+
 ### 5. (OPTIONAL)
 For math nerds(I'm not one of them but I certainly will try to become one), there are additional methods that will let you use some data from the process of liking the video for the programmer to analyze.
 The data that are collected by the methods above are the number of active streams and number of streams that you liked for a single execution of the program.
@@ -171,6 +185,73 @@ db = 'YSL'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
 sl.start_liking_with_data(user, host, db_passwd, db)
+```
+
+## Local Web Server Implementation
+For the lazy boys out there who are always getting away from their computers and want to remotely control the program from any device, this is how it works.
+The server uses [Flask](https://flask.palletsprojects.com/en/1.1.x/), a popular web framework for developing web applications.
+
+## How is it used?
+
+### 1.
+Download the server.py file and the templates folder. Make sure they are in the same directory with your stream liker code.
+
+
+### 2.
+Fill out the required informations inside the square brackets[].
+Example:
+```python
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/like')
+def like():
+    return render_template('like.html')
+
+if __name__ == '__main__':
+    app.run(debug=True, host='[Your private IP address]')
+```
+
+### 3.
+Create an instance of the StreamLiker, and put the methods you want to execute inside the like function.
+Example:
+```python
+from flask import Flask, render_template
+from YSL import StreamLiker
+
+email = 'email@test.com'
+passwd = 'fubukiIsMyFriend'
+sl = StreamLiker('channel ids.txt', email, passwd)
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/like')
+def like():
+    sl.is_streaming()
+    sl.get_stream_links()
+    sl.like_videos()
+    return render_template('like.html')
+
+if __name__ == '__main__':
+    app.run(debug=True, host='[Your private IP address]')
+```
+
+### 4.
+Now that the code is done, running it will create a local web server on your computer.
+As long as the code above is running, you can access the website on any of your device and like videos remotely.
+For accessing the website, type into your browser the following:
+
+```
+http://[THE COMPUTER'S PRIVATE IP ADDRESS]:5000
 ```
 
 ## Contribution
