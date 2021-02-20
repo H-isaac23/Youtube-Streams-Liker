@@ -199,6 +199,7 @@ Download the server.py file and the templates folder. Make sure they are in the 
 
 ### 2.
 Fill out the required informations inside the square brackets[].
+
 Example:
 ```python
 from flask import Flask, render_template
@@ -219,6 +220,7 @@ if __name__ == '__main__':
 
 ### 3.
 Create an instance of the StreamLiker, and put the methods you want to execute inside the like function.
+
 Example:
 ```python
 from flask import Flask, render_template
