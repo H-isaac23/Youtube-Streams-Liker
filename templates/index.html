@@ -1,0 +1,19 @@
+<!doctype html>
+
+
+<head>
+  <title>Test</title>
+  <meta charset=utf-8>
+</head>
+<body>
+    <h1>My Website</h1>
+    <a href='/like'><button id="like-button">Like</button></a>
+    <script>
+      document.querySelector('#like-button').addEventListener('click', disable)
+
+      function disable(){
+        document.getElementById('like-button').disabled = 'disabled';
+      }
+
+    </script>
+</body>
