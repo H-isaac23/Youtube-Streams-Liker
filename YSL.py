@@ -252,9 +252,3 @@ class StreamLiker(YSL):
         self.get_end_time()
         self.append_data_on_file()
         self.append_data_on_db(user, host, passwd, db)
-
-if __name__ == "__main__":
-    email = os.environ.get('TEST_EMAIL')
-    passwd = os.environ.get('TEST_PASS')
-    sl = StreamLiker('channel ids.txt', email, passwd)
-    sl.start_liking_with_data("isaac", "localhost", "DevAisha23!", "YSL")
