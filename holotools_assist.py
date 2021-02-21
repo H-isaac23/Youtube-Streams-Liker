@@ -10,6 +10,7 @@ from random import randint
 import os
 import time
 
+
 class HoloAssist:
     def __init__(self):
         self.num_streams = None
@@ -101,7 +102,7 @@ class HoloAssist:
         driver.refresh()
         time.sleep(10)
 
-        for i in range(1, self.num_streams + 1):
+        for i in range(1, self.num_streams):
             try:
                 num = str(i)
                 print(num, f'/html/body/div/main/div/div/div/div[3]/div[{num}]')
@@ -120,3 +121,9 @@ class HoloAssist:
     def clear_data(self):
         self.num_streams = None
         self.link = None
+
+
+hta = HoloAssist()
+hta.get_link_ids()
+hta.open_holotools()
+hta.clear_data()
