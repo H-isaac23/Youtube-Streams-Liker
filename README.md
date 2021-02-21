@@ -241,11 +241,13 @@ def like():
     sl.is_streaming()
     sl.get_stream_links()
     sl.like_videos()
+    sl.clear_data()
     return render_template('like.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='[Your private IP address]')
 ```
+Note: *clear_data* is meant for clearing the various data needed for liking a stream such as the active streams links, it is so that the after each succeeding runs of the *like_videos* method, you won't be liking those same streams again.
 
 ### 4.
 Now that the code is done, running it will create a local web server on your computer.
