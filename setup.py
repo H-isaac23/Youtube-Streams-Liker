@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read() + open('CHANGELOG.txt').read()
+    long_description = fh.read() + '\n\n' + open('CHANGELOG.txt').read()
 
 setup(
     name="YSL-H-isaac23",
-    version="1.0.1",
+    version="1.1.0",
     author="John Isaac Delgado",
     author_email="dev.isaac23@gmail.com",
     description="A package for automated liking of Active YouTube Streams in the background using selenium and requests.",
