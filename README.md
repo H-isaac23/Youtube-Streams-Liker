@@ -67,6 +67,7 @@ This will store the channel ids of the currently streaming channels on a diction
 
 ### 3.
 In order to like the stream, we first need to get the video links of the streams. This is when we call get_stream_links() method.
+(Make sure you download and put "geckodriver.exe" on the directory: 'C:/Program Files (x86)/geckodriver.exe', refer to the "Third Party Libraries and Dependencies" above.)
 Example:
 ``` python
 sl.get_stream_links()
@@ -76,6 +77,7 @@ This will also store the links in a dictionary and in a text file called "video 
 
 ### 4.
 Now that we have the video links, we will now like them using a selenium webdriver. Simply call the method like_videos() to get started.
+
 Example:
 ``` python
 sl.like_videos()
@@ -128,68 +130,29 @@ sl.append_data_on_file()
 ```
 
 *append_data_on_db* takes all the data collected by the program and then stores it in your local database through mysql.
-The method needs the following arguments: user, host, password, database
-As of the moment, the user of this program might have to configure the code inside the *append_data_on_db* method in order to select the table on which the user will append the data to.
-```python
-# Legend: ******* - put table name here
+The method needs the following arguments: user, host, password, database, table_name
 
-def append_data_on_db(self, user, host, passwd, database):
-    tel = self.stream_data["Time elapsed"]
-    nas = self.stream_data["No. of active streams"]
-    nls = self.stream_data["No. of to-be-liked streams"]
-    ts = self.stream_data["Time Started"]
-    te = self.stream_data["Time Ended"]
-    d = self.date
-
-    db = mysql.connector.connect(
-        user=user,
-        host=host,
-        passwd=passwd,
-        database=database
-    )
-
-    my_cursor = db.cursor()
-    my_cursor.execute("""CREATE TABLE IF NOT EXISTS *******(NID INT PRIMARY KEY AUTO_INCREMENT, 
-                                                            Time_Elapsed DECIMAL(6, 2), 
-                                                            Num_active_streams SMALLINT UNSIGNED, 
-                                                            Num_liked_streams SMALLINT UNSIGNED, 
-                                                            Time_Started VARCHAR(10), 
-                                                            Time_Ended VARCHAR(10), 
-                                                            Streams_Liked SMALLINT UNSIGNED, 
-                                                            Date VARCHAR(15))""")
-
-    my_cursor.execute("""INSERT INTO *******(Time_Elapsed, 
-                                             Num_active_streams, 
-                                             Num_liked_streams, 
-                                             Time_Started, 
-                                             Time_Ended, 
-                                             Date) 
-                                             VALUES(%s,%s,%s,%s,%s,%s)""",
-                      (tel, nas, nls, ts, te, d))
-    db.commit()
-```
-
-The user can then use the method normally.
 Example:
 ```python
 user = 'root'
 host = 'localhost'
 passwd = 'root'
 database = 'YSL'
-sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database)
+table_name = 'stream_data'
+sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, table_name=table_name)
 ```
 
-### start_liking_with_data(self, user, host, passwd, db)
+### start_liking_with_data(self, user, host, passwd, db, table_name)
 This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
 ```python
-def start_liking_with_data(self, user, host, passwd, db):
+def start_liking_with_data(self, user, host, passwd, db, table_name):
     self.get_start_time()
     self.is_streaming()
     self.get_stream_links()
     self.like_videos()
     self.get_end_time()
     self.append_data_on_file()
-    self.append_data_on_db(user, host, passwd, db)
+    self.append_data_on_db(user, host, passwd, db, table_name)
 ```
 The user then needs to pass the needed arguments if the user wants to append the data onto their own database.
 Example:
@@ -202,9 +165,10 @@ user = 'root'
 host = 'localhost'
 db_passwd = 'baqua'
 db = 'YSL'
+table_name = 'stream_data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
-sl.start_liking_with_data(user, host, db_passwd, db)
+sl.start_liking_with_data(user, host, db_passwd, db, table_name)
 ```
 
 ## Contribution
