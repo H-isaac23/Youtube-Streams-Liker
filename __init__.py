@@ -224,7 +224,7 @@ class StreamLiker(YSL):
         print(f"Time finished: {self.time_ended}")
         print("Total time elapsed: %.2f seconds." % self.total_time_elapsed)
 
-    def append_data_on_db(self, user, host, passwd, database):
+    def append_data_on_db(self, user, host, passwd, database, table_name):
         tel = self.stream_data["Time elapsed"]
         nas = self.stream_data["No. of active streams"]
         nls = self.stream_data["No. of to-be-liked streams"]
@@ -240,30 +240,30 @@ class StreamLiker(YSL):
         )
 
         my_cursor = db.cursor()
-        my_cursor.execute("""CREATE TABLE IF NOT EXISTS stream_data(NID INT PRIMARY KEY AUTO_INCREMENT, 
+        my_cursor.execute("""CREATE TABLE IF NOT EXISTS %s(NID INT PRIMARY KEY AUTO_INCREMENT, 
                                                                     Time_Elapsed DECIMAL(6, 2), 
                                                                     Num_active_streams SMALLINT UNSIGNED, 
                                                                     Num_liked_streams SMALLINT UNSIGNED, 
                                                                     Time_Started VARCHAR(10), 
                                                                     Time_Ended VARCHAR(10), 
                                                                     Streams_Liked SMALLINT UNSIGNED, 
-                                                                    Date VARCHAR(15))""")
+                                                                    Date VARCHAR(15))"""%table_name)
 
-        my_cursor.execute("""INSERT INTO stream_data(Time_Elapsed, 
-                                                     Num_active_streams, 
-                                                     Num_liked_streams, 
-                                                     Time_Started, 
-                                                     Time_Ended, 
-                                                     Date) 
-                                                     VALUES(%s,%s,%s,%s,%s,%s)""",
-                          (tel, nas, nls, ts, te, d))
+
+        query = """INSERT INTO %s(Time_Elapsed, 
+                                 Num_active_streams, 
+                                 Num_liked_streams, 
+                                 Time_Started, 
+                                 Time_Ended, 
+                                 Date) """%table_name
+        my_cursor.execute(query+"VALUES(%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db):
+    def start_liking_with_data(self, user, host, passwd, db, table_name):
         self.get_start_time()
         self.is_streaming()
         self.get_stream_links()
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file()
-        self.append_data_on_db(user, host, passwd, db)
+        self.append_data_on_db(user, host, passwd, db, table_name)
