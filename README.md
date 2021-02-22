@@ -1,13 +1,25 @@
 # Youtube-stream-liker
 
-This is a project using python which looks through a file with channel IDs and checks whether a stream from that channel is active or not. If there is a stream, the script will like the video with the email and password provided by the user.
+YouTube Stream Liker (YSL) is a package developed for automated liking of Active YouTube streams by the channels provided by the user.
 
 ## Note(Project Status)
-The project is now currently on the phase of creating a GUI, although I may not have enough time to do it in the coming weeks because of school and other side projects that I want to do. As of now, the program is already complete based on what I had originally planned, though I might pick this up again in the future if I want to learn about GUIs.
+The project is now done with the main goal it aimed to reach.
+It is now currently on the phase of creating a GUI, as I have been planning to turn this as a desktop application, although I may not have enough time to do it in the coming weeks because of school and other side projects that I want to do. As of now, the program is already complete based on what I had originally planned, though I might pick this up again in the future if I want to learn about GUIs.
 
-## Libraries Used
+## Supported Python Versions
+-Python 3.7 is fully supported and tested. This library may work for earlier versions of Python3 and later versions, but I do not currently run tests on those versions.
 
--Selenium, requests, os, random, time, collections, mysql-connector-python, flask
+## Third Party Libraries and Dependencies
+
+The following libraries will be installed when you install the YSL library:
+* [Selenium](https://selenium-python.readthedocs.io/)
+* [Requests](https://requests.readthedocs.io/en/master/)
+* [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)
+
+For development, you will also need the following installed:
+* [Firefox](https://www.mozilla.org/en-US/firefox/new/)
+* [Geckodriver](https://github.com/mozilla/geckodriver/releases)
+(Make sure you put "geckodriver.exe" on the directory: 'C:/Program Files (x86)/geckodriver.exe')
 
 ## How is it used?
 
@@ -22,9 +34,18 @@ UCFTLzh12_nrtzqBPsTCqenA - Aki
 UCD8HOxPs4Xvsm8H0ZxXGiBw - Mel
 UC1CfXB_kRs3C-zaeTG3oGyg - Haato
 ```
--Copy the YSL.py file into your repository.
+### 0. Installation
+Install this library in a virtualenv using pip. [virtualenv](https://virtualenv.pypa.io/en/latest/) is a tool to create isolated Python environments. The basic problem it addresses is one of dependencies and versions, and indirectly permissions.
 
-### 1. (Using the YSL.py File)
+With virtualenv, it's possible to install this library without needing system install permissions, and without clashing with the installed system dependencies.
+```
+pip install virtualenv
+virtualenv <your-env>
+<your-env>\Scripts\activate
+<your-env>\Scripts\pip.exe install YSL-H-isaac23
+```
+
+### 1. 
 Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
 Example:
 ``` python
@@ -51,8 +72,7 @@ Example:
 sl.get_stream_links()
 ```
 
-This will also store the links in a dictionary.
-This will also store the links in a text file called "video links.txt" with the purpose of keeping track of the videos that the program has already liked.
+This will also store the links in a dictionary and in a text file called "video links.txt" with the purpose of keeping track of the videos that the program has already liked.
 
 ### 4.
 Now that we have the video links, we will now like them using a selenium webdriver. Simply call the method like_videos() to get started.
@@ -193,6 +213,5 @@ Any ideas related to a youtube video will be entertained and implemented in the 
 Others can also suggest ideas on how a certain part of the code can be done a lot more efficient, put those also on the issues tab.
 
 ## License
-
 
 [MIT](https://choosealicense.com/licenses/mit/)
