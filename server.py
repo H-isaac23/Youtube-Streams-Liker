@@ -14,7 +14,7 @@ def index():
 
 @app.route('/like')
 def like():
-    sl.start_liking_with_data("isaac", "localhost", "DevAisha23!", "YSL")
+    sl.start_liking_with_data("isaac", "localhost", "DevAisha23!", "YSL", "stream_data")
     sl.clear_data()
     return render_template('like.html')
 
