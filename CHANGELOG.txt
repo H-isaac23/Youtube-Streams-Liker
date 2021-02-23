@@ -16,3 +16,8 @@ Change Log
 1.1.1(02/23/21)
 --------------
 -YSL class now accessible.
+Problem: YSL still was not accessible
+
+1.1.2(02/23/21)
+--------------
+-YSL class now accessible.
