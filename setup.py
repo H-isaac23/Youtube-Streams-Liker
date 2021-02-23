@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="YSL-H-isaac23",
-    version="1.1.1",
+    version="1.1.2",
     author="John Isaac Delgado",
     author_email="dev.isaac23@gmail.com",
     description="A package for automated liking of Active YouTube Streams in the background using selenium and requests.",
