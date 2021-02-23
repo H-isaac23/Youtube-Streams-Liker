@@ -16,3 +16,6 @@ Change Log
 1.1.3(02/23/21)
 --------------
 -YSL class now accessible.
+
+1.1.4(02/23/21)
+-Update package description.
