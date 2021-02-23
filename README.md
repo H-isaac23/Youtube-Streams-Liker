@@ -49,7 +49,7 @@ virtualenv <your-env>
 Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
 Example:
 ``` python
-from YSL import StreamLiker
+from ysl.YSL import StreamLiker
 
 email = 'email@test.com'
 passwd = 'qwerty'
@@ -88,7 +88,7 @@ The user can then tinker with the code, like putting the above block of code int
 
 Full Code:
 ```python
-from YSL import StreamLiker
+from ysl.YSL import StreamLiker
 
 email = 'email@test.com'
 passwd = 'qwerty'
@@ -109,7 +109,7 @@ The additional methods that are within the program is get_start_time(),  get_end
 
 Example:
 ```python
-from YSL import StreamLiker
+from ysl.YSL import StreamLiker
 
 email = 'email@test.com'
 passwd = 'qwerty'
@@ -157,7 +157,7 @@ def start_liking_with_data(self, user, host, passwd, db, table_name):
 The user then needs to pass the needed arguments if the user wants to append the data onto their own database.
 Example:
 ```python
-from YSL import StreamLiker
+from ysl.YSL import StreamLiker
 
 email = 'yt@test.com'
 yt_passwd = 'fubukibestfriend'
