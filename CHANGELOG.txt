@@ -12,3 +12,7 @@ Change Log
 1.1.0(02/22/21)
 --------------
 -StreamLiker method append_data_on_db() along with start_liking_with_data() now accepts the table_name of a database.
+
+1.1.1(02/23/21)
+--------------
+-YSL class now accessible.
