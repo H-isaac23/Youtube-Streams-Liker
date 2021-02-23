@@ -8,11 +8,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 from collections import OrderedDict
 from random import randint
 from datetime import date
-from YSL import *
+from ysl import YSL
 import mysql.connector
 import csv
 import requests
 import os
 import time
-import YSL
+
 
