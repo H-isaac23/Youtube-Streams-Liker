@@ -50,6 +50,9 @@ class StreamLiker(YSL):
         self.email = email
         self.passwd = passwd
 
+        self.driver = None
+        self.options = FirefoxOptions()
+
     def clear_data(self):
         self.start_time = None
         self.time_started = None
@@ -87,17 +90,12 @@ class StreamLiker(YSL):
         self.stream_data['No. of active streams'] = self.number_of_active_streams
 
     def get_stream_links(self):
-        path = 'C:/Program Files (x86)/geckodriver.exe'
-        options = FirefoxOptions()
-        options.add_argument('--headless')
-        options.add_argument('--mute-audio')
-        driver = webdriver.Firefox(options=options, executable_path=path)
         
         for name, channel_link in self.currently_streaming.items():
-            driver.get(channel_link + '/videos')
+            self.driver.get(channel_link + '/videos')
 
             try:
-                video_url = WebDriverWait(driver, 10).until(
+                video_url = WebDriverWait(self.driver, 10).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
                 )
                 link = video_url.get_attribute('href')
@@ -116,7 +114,7 @@ class StreamLiker(YSL):
 
             except:
                 print("XPATH not found")
-                driver.quit()
+                self.driver_quit()
                 return None
 
         self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
@@ -125,7 +123,6 @@ class StreamLiker(YSL):
             self.streams_liked_id.append(link[32:])
 
         self.stream_data['Streams liked'] = ', '.join(self.streams_liked_id)
-        driver.quit()
         print()
 
     def like_videos(self):
@@ -136,19 +133,13 @@ class StreamLiker(YSL):
             ##### Status Code
             print("Logging into google...\n")
 
-            option = FirefoxOptions()
-            option.add_argument('--headless')
-            option.add_argument('--mute-audio')
-            path = 'C:/Program Files (x86)/geckodriver.exe'
-            driver = webdriver.Firefox(options=option, executable_path=path)
-
             EMAIL = self.email
             PASSWORD = self.passwd
 
-            driver.get(
+            self.driver.get(
                 """https://accounts.google.com/signin/v2/identifier?hl=en&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin""")
             try:
-                email = WebDriverWait(driver, 10).until(
+                email = WebDriverWait(self.driver, 10).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="identifierId"]'))
                 )
                 time.sleep(randint(4, 7))
@@ -156,12 +147,12 @@ class StreamLiker(YSL):
                 email.send_keys(Keys.RETURN)
             except:
                 print('There is a problem in the email idk lmao, driver quitting')
-                driver.quit()
+                self.driver_quit()
 
             time.sleep(5)
 
             try:
-                password = WebDriverWait(driver, 10).until(
+                password = WebDriverWait(self.driver, 10).until(
                     EC.presence_of_element_located(
                         (By.XPATH,
                          "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input"))
@@ -171,25 +162,24 @@ class StreamLiker(YSL):
                 password.send_keys(Keys.RETURN)
             except:
                 print("Password textbox not found")
-                driver.quit()
+                self.driver_quit()
 
             time.sleep(5)
 
             for name, link in self.streams_liked.items():
-                driver.get(link)
+                self.driver.get(link)
                 try:
-                    button = WebDriverWait(driver, 10).until(
+                    button = WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable(
                             (By.XPATH, '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a'))
                     )
-                    ActionChains(driver).move_to_element(button).click(button).perform()
+                    ActionChains(self.driver).move_to_element(button).click(button).perform()
                     print(f'Video from {name} successfully liked.')
                     time.sleep(5)
                 except:
                     print('Xpath not found')
-                    driver.quit()
+                    self.driver_quit()
 
-            driver.quit()
         print()
 
     def get_end_time(self):
@@ -267,3 +257,15 @@ class StreamLiker(YSL):
         self.get_end_time()
         self.append_data_on_file()
         self.append_data_on_db(user, host, passwd, db, table_name)
+
+    def config_driver(self, path, args=None):
+        try:
+            for arg in args:
+                self.options.add_argument(arg)
+        except:
+            print("No args supplied for driver options.")
+
+        self.driver = webdriver.Firefox(options=self.options, executable_path=path)
+
+    def driver_quit(self):
+        self.driver.quit()
