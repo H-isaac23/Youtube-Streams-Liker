@@ -19,7 +19,6 @@ The following libraries will be installed when you install the YSL library:
 For development, you will also need the following installed:
 * [Firefox](https://www.mozilla.org/en-US/firefox/new/)
 * [Geckodriver](https://github.com/mozilla/geckodriver/releases)
-(Make sure you put "geckodriver.exe" on the directory: 'C:/Program Files (x86)/geckodriver.exe')
 
 ## How is it used?
 
@@ -47,6 +46,8 @@ virtualenv <your-env>
 
 ### 1. 
 Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
+And the configure the driver by passing the path for the driver and the options.(Driver options is optional)
+
 Example:
 ``` python
 from ysl.YSL import StreamLiker
@@ -54,7 +55,14 @@ from ysl.YSL import StreamLiker
 email = 'email@test.com'
 passwd = 'qwerty'
 c_id = 'channels id.txt'
+
+# Create an instance of the StreamLiker class 
 sl = StreamLiker(c_id, email, passwd)
+
+# Configure the driver.
+sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
+
+# Example(with options): sl.config_driver('C:/Program Files (x86)/geckodriver.exe', ['--headless'])
 ```
 
 ### 2.
@@ -84,6 +92,11 @@ sl.like_videos()
 ```
 
 And with that, the streams of the youtubers that you want to like can now be done automatically. 
+Finally, the user should end the session of the driver.
+``` python
+sl.driver_quit()
+```
+
 The user can then tinker with the code, like putting the above block of code into a for loop so that the script will regularly check the provided channels whether they are streaming or not.
 
 Full Code:
@@ -94,10 +107,12 @@ email = 'email@test.com'
 passwd = 'qwerty'
 c_id = 'channels id.txt'
 sl = StreamLiker(c_id, email, passwd)
+sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.is_streaming()
 sl.get_stream_links()
 sl.like_videos()
+sl.driver_quit()
 ```
 
 ### 5. (OPTIONAL)
@@ -115,12 +130,14 @@ email = 'email@test.com'
 passwd = 'qwerty'
 c_id = 'channels id.txt'
 sl = StreamLiker(c_id, email, passwd)
+sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.get_start_time()
 sl.is_streaming()
 sl.get_stream_links()
 sl.like_videos()
 sl.get_end_time()
+sl.driver_quit()
 ```
 
 *append_data_on_file* takes all the data collected by the program and then stores it in a csv file. (Note: A folder named "Stream data" must be created first in order for this method to work.)
@@ -133,7 +150,7 @@ sl.append_data_on_file()
 The method needs the following arguments: user, host, password, database, table_name
 
 Example:
-```python
+``` python
 user = 'root'
 host = 'localhost'
 passwd = 'root'
@@ -168,7 +185,9 @@ db = 'YSL'
 table_name = 'stream_data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
+sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 sl.start_liking_with_data(user, host, db_passwd, db, table_name)
+sl.driver_quit()
 ```
 
 ## Contribution
