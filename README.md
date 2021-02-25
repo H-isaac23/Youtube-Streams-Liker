@@ -140,10 +140,12 @@ sl.get_end_time()
 sl.driver_quit()
 ```
 
-*append_data_on_file* takes all the data collected by the program and then stores it in a csv file. (Note: A folder named "Stream data" must be created first in order for this method to work.)
+*append_data_on_file* takes all the data collected by the program and then stores it in a csv file. 
+Put the directory in which you would want your files to be saved to as an argument.
+Note: Use forward slashes.
 Example:
 ``` python
-sl.append_data_on_file()
+sl.append_data_on_file("C:/Users/Stream data")
 ```
 
 *append_data_on_db* takes all the data collected by the program and then stores it in your local database through mysql.
@@ -162,13 +164,13 @@ sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, tab
 ### start_liking_with_data(self, user, host, passwd, db, table_name)
 This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
 ```python
-def start_liking_with_data(self, user, host, passwd, db, table_name):
+def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
     self.get_start_time()
     self.is_streaming()
     self.get_stream_links()
     self.like_videos()
     self.get_end_time()
-    self.append_data_on_file()
+    self.append_data_on_file(my_dir)
     self.append_data_on_db(user, host, passwd, db, table_name)
 ```
 The user then needs to pass the needed arguments if the user wants to append the data onto their own database.
@@ -183,10 +185,11 @@ host = 'localhost'
 db_passwd = 'baqua'
 db = 'YSL'
 table_name = 'stream_data'
+my_dir = 'C:/Users/Stream data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
-sl.start_liking_with_data(user, host, db_passwd, db, table_name)
+sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir)
 sl.driver_quit()
 ```
 
