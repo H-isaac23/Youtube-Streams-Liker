@@ -188,7 +188,7 @@ class StreamLiker(YSL):
         self.total_time_elapsed = time.time() - self.start_time
         self.stream_data['Time elapsed'] = self.total_time_elapsed
 
-    def append_data_on_file(self):
+    def append_data_on_file(self, my_dir):
         # File naming
         today = date.today()
         self.date = today.strftime("%m/%d/%y")
@@ -196,15 +196,15 @@ class StreamLiker(YSL):
         filename = f'stream_data {hyphenated_date}.csv'
 
         # Check if a file exists
-        if not os.path.exists(f"Stream data/{filename}"):
-            with open(f"Stream data/{filename}", 'a', newline='') as csv_file:
+        if not os.path.exists(my_dir + f'/{filename}'):
+            with open(my_dir + f'/{filename}', 'a', newline='') as csv_file:
                 fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started',
                               'Time Ended',
                               'Streams liked']
                 csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
                 csv_writer.writeheader()
 
-        with open(f"Stream data/{filename}", 'a', newline='') as csv_file:
+        with open(my_dir + f'/{filename}', 'a', newline='') as csv_file:
             fieldnames = ['Time elapsed', 'No. of active streams', 'No. of to-be-liked streams', 'Time Started',
                           'Time Ended',
                           'Streams liked']
@@ -249,13 +249,13 @@ class StreamLiker(YSL):
         my_cursor.execute(query+"VALUES(%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
         self.get_start_time()
         self.is_streaming()
         self.get_stream_links()
         self.like_videos()
         self.get_end_time()
-        self.append_data_on_file()
+        self.append_data_on_file(my_dir)
         self.append_data_on_db(user, host, passwd, db, table_name)
 
     def config_driver(self, path, args=None):
