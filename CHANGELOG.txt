@@ -24,3 +24,7 @@ Change Log
 1.2.0(02/25/21)
 --------------
 -Driver configuration functionality added.
+
+1.2.1(02/25/21)
+--------------
+-Directory is now passed as a required argument in append_data_on_file method.
