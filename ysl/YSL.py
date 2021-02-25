@@ -89,8 +89,11 @@ class StreamLiker(YSL):
 
         self.stream_data['No. of active streams'] = self.number_of_active_streams
 
-    def get_stream_links(self):
-        
+    def get_stream_links(self, txt_dir):
+
+        if not os.path.exists(txt_dir + "/video links.txt"):
+            open(txt_dir + "/video links.txt", 'a')
+
         for name, channel_link in self.currently_streaming.items():
             self.driver.get(channel_link + '/videos')
 
@@ -237,22 +240,21 @@ class StreamLiker(YSL):
                                                                     Time_Started VARCHAR(10), 
                                                                     Time_Ended VARCHAR(10), 
                                                                     Streams_Liked SMALLINT UNSIGNED, 
-                                                                    Date VARCHAR(15))"""%table_name)
-
+                                                                    Date VARCHAR(15))""" % table_name)
 
         query = """INSERT INTO %s(Time_Elapsed, 
                                  Num_active_streams, 
                                  Num_liked_streams, 
                                  Time_Started, 
                                  Time_Ended, 
-                                 Date) """%table_name
-        my_cursor.execute(query+"VALUES(%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d))
+                                 Date) """ % table_name
+        my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, txt_dir):
         self.get_start_time()
         self.is_streaming()
-        self.get_stream_links()
+        self.get_stream_links(txt_dir)
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file(my_dir)
