@@ -75,10 +75,12 @@ This will store the channel ids of the currently streaming channels on a diction
 
 ### 3.
 In order to like the stream, we first need to get the video links of the streams. This is when we call get_stream_links() method.
-(Make sure you download and put "geckodriver.exe" on the directory: 'C:/Program Files (x86)/geckodriver.exe', refer to the "Third Party Libraries and Dependencies" above.)
+Pass in the directory in which you will put your video links text file, for the purpose of keeping track what videos you have liked.
+
 Example:
 ``` python
-sl.get_stream_links()
+# Use forward slashes of backward slashes don't work.
+sl.get_stream_links("C:/Users/Stream data")
 ```
 
 This will also store the links in a dictionary and in a text file called "video links.txt" with the purpose of keeping track of the videos that the program has already liked.
@@ -110,7 +112,7 @@ sl = StreamLiker(c_id, email, passwd)
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.is_streaming()
-sl.get_stream_links()
+sl.get_stream_links("C:/Users/Stream data")
 sl.like_videos()
 sl.driver_quit()
 ```
@@ -134,7 +136,7 @@ sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.get_start_time()
 sl.is_streaming()
-sl.get_stream_links()
+sl.get_stream_links("C:/Users/Stream data")
 sl.like_videos()
 sl.get_end_time()
 sl.driver_quit()
@@ -164,10 +166,10 @@ sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, tab
 ### start_liking_with_data(self, user, host, passwd, db, table_name)
 This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
 ```python
-def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
+def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, txt_dir):
     self.get_start_time()
     self.is_streaming()
-    self.get_stream_links()
+    self.get_stream_links(txt_dir)
     self.like_videos()
     self.get_end_time()
     self.append_data_on_file(my_dir)
@@ -186,10 +188,11 @@ db_passwd = 'baqua'
 db = 'YSL'
 table_name = 'stream_data'
 my_dir = 'C:/Users/Stream data'
+txt_dir = 'C:/Users/Stream data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
-sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir)
+sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir, txt_dir)
 sl.driver_quit()
 ```
 
