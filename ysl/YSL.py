@@ -159,6 +159,7 @@ class StreamLiker(YSL):
 
                 except:
                     print("like button error or something idk")
+                    self.driver_quit()
 
                 if not is_liked:
                     self.video_ids.append(link[32:])
