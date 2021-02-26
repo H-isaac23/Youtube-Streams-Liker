@@ -103,7 +103,7 @@ class StreamLiker(YSL):
                 )
                 link = video_url.get_attribute('href')
 
-                with open('video links.txt', 'r') as link_read:
+                with open(txt_dir + '/video links.txt', 'r') as link_read:
                     if link in link_read.read():
                         ##### Status Code
                         print(f'Video from {name} is already liked.')
@@ -111,7 +111,7 @@ class StreamLiker(YSL):
                         self.number_of_to_be_liked_streams += 1
                         self.streams_liked[name] = link
                         self.video_ids.append(link[32:])
-                        with open('video links.txt', 'a') as link_write:
+                        with open(txt_dir + '/video links.txt', 'a') as link_write:
                             link_write.write(link + '\n')
                             print(f'Video stream of {name} added to queue')
 
