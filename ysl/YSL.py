@@ -248,6 +248,7 @@ class StreamLiker(YSL):
             self.append_data_on_file(my_dir)
             self.append_data_on_db(user, host, passwd, db, table_name)
         except:
+            print("Error somewhere")
             self.driver_quit()
 
     def config_driver(self, path, args=None):
