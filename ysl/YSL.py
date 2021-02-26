@@ -53,6 +53,8 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
+        self.version = 1.4
+
     def clear_data(self):
         self.start_time = None
         self.time_started = None
@@ -89,51 +91,12 @@ class StreamLiker(YSL):
 
         self.stream_data['No. of active streams'] = self.number_of_active_streams
 
-    def get_stream_links(self, txt_dir):
-
-        if not os.path.exists(txt_dir + "/video links.txt"):
-            open(txt_dir + "/video links.txt", 'a')
-
-        for name, channel_link in self.currently_streaming.items():
-            self.driver.get(channel_link + '/videos')
-
-            try:
-                video_url = WebDriverWait(self.driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
-                )
-                link = video_url.get_attribute('href')
-
-                with open(txt_dir + '/video links.txt', 'r') as link_read:
-                    if link in link_read.read():
-                        ##### Status Code
-                        print(f'Video from {name} is already liked.')
-                    elif link not in link_read.read():
-                        self.number_of_to_be_liked_streams += 1
-                        self.streams_liked[name] = link
-                        self.video_ids.append(link[32:])
-                        with open(txt_dir + '/video links.txt', 'a') as link_write:
-                            link_write.write(link + '\n')
-                            print(f'Video stream of {name} added to queue')
-
-            except:
-                print("XPATH not found")
-                self.driver_quit()
-                return None
-
-        self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
-
-        for link in self.streams_liked.values():
-            self.streams_liked_id.append(link[32:])
-
-        self.stream_data['Streams liked'] = ', '.join(self.streams_liked_id)
-        print()
-
     def like_videos(self):
 
-        if self.streams_liked == {}:
-            print("All streams on the channels you provided are already liked.")
-        else:
-            ##### Status Code
+        if self.number_of_active_streams == 0:
+            print("There are no active streams as of the moment.")
+        elif self.number_of_active_streams > 0:
+
             print("Logging into google...\n")
 
             EMAIL = self.email
@@ -169,21 +132,42 @@ class StreamLiker(YSL):
 
             time.sleep(5)
 
-            for name, link in self.streams_liked.items():
-                self.driver.get(link)
-                try:
-                    button = WebDriverWait(self.driver, 10).until(
-                        EC.element_to_be_clickable(
-                            (By.XPATH, '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a'))
-                    )
-                    ActionChains(self.driver).move_to_element(button).click(button).perform()
-                    print(f'Video from {name} successfully liked.')
-                    time.sleep(5)
-                except:
-                    print('Xpath not found')
-                    self.driver_quit()
+            for name, channel_link in self.currently_streaming.items():
+                is_liked = False
+                like_button = None
+                link = None
+                self.driver.get(channel_link + '/videos')
 
-        print()
+                try:
+                    video_url = WebDriverWait(self.driver, 10).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
+                    )
+                    link = video_url.get_attribute('href')
+                except:
+                    print("lol getting link error")
+
+                self.driver.get(link)
+
+                try:
+                    like_button = WebDriverWait(self.driver, 10).until(
+                        EC.element_to_be_clickable((By.XPATH,
+                                                    '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button'))
+                    )
+                    if like_button.get_attribute("aria-pressed") == "true":
+                        is_liked = True
+                        print(f"Video from {name} is already liked.")
+
+                except:
+                    print("like button error or something idk")
+
+                if not is_liked:
+                    self.video_ids.append(link[32:])
+                    self.number_of_to_be_liked_streams += 1
+                    ActionChains(self.driver).move_to_element(like_button).click(like_button).perform()
+                    print(f"Video from {name} is liked.")
+
+            self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
+            self.stream_data['Streams liked'] = ', '.join(self.video_ids)
 
     def get_end_time(self):
         self.time_ended = time.strftime("%H:%M:%S", time.localtime())
@@ -224,6 +208,7 @@ class StreamLiker(YSL):
         ts = self.stream_data["Time Started"]
         te = self.stream_data["Time Ended"]
         d = self.date
+        ver = self.version
 
         db = mysql.connector.connect(
             user=user,
@@ -240,21 +225,22 @@ class StreamLiker(YSL):
                                                                     Time_Started VARCHAR(10), 
                                                                     Time_Ended VARCHAR(10), 
                                                                     Streams_Liked SMALLINT UNSIGNED, 
-                                                                    Date VARCHAR(15))""" % table_name)
+                                                                    Date VARCHAR(15),
+                                                                    prog_ver VARCHAR(10))""" % table_name)
 
         query = """INSERT INTO %s(Time_Elapsed, 
                                  Num_active_streams, 
                                  Num_liked_streams, 
                                  Time_Started, 
                                  Time_Ended, 
-                                 Date) """ % table_name
-        my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d))
+                                 Date,
+                                 prog_ver) """ % table_name
+        my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, txt_dir):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
         self.get_start_time()
         self.is_streaming()
-        self.get_stream_links(txt_dir)
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file(my_dir)
