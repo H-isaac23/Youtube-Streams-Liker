@@ -239,12 +239,15 @@ class StreamLiker(YSL):
         db.commit()
 
     def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
-        self.get_start_time()
-        self.is_streaming()
-        self.like_videos()
-        self.get_end_time()
-        self.append_data_on_file(my_dir)
-        self.append_data_on_db(user, host, passwd, db, table_name)
+        try:
+            self.get_start_time()
+            self.is_streaming()
+            self.like_videos()
+            self.get_end_time()
+            self.append_data_on_file(my_dir)
+            self.append_data_on_db(user, host, passwd, db, table_name)
+        except:
+            self.driver_quit()
 
     def config_driver(self, path, args=None):
         try:
