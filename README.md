@@ -74,18 +74,6 @@ sl.is_streaming()
 This will store the channel ids of the currently streaming channels on a dictionary.
 
 ### 3.
-In order to like the stream, we first need to get the video links of the streams. This is when we call get_stream_links() method.
-Pass in the directory in which you will put your video links text file, for the purpose of keeping track what videos you have liked.
-
-Example:
-``` python
-# Use forward slashes of backward slashes don't work.
-sl.get_stream_links("C:/Users/Stream data")
-```
-
-This will also store the links in a dictionary and in a text file called "video links.txt" with the purpose of keeping track of the videos that the program has already liked.
-
-### 4.
 Now that we have the video links, we will now like them using a selenium webdriver. Simply call the method like_videos() to get started.
 
 Example:
@@ -99,8 +87,6 @@ Finally, the user should end the session of the driver.
 sl.driver_quit()
 ```
 
-The user can then tinker with the code, like putting the above block of code into a for loop so that the script will regularly check the provided channels whether they are streaming or not.
-
 Full Code:
 ```python
 from ysl.YSL import StreamLiker
@@ -112,12 +98,12 @@ sl = StreamLiker(c_id, email, passwd)
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.is_streaming()
-sl.get_stream_links("C:/Users/Stream data")
 sl.like_videos()
 sl.driver_quit()
 ```
+*Note*: In case the user wants to put the process into a for loop for multiple
 
-### 5. (OPTIONAL)
+### 4. (OPTIONAL)
 For math nerds(I'm not one of them but I certainly will try to become one), there are additional methods that will let you use some data from the process of liking the video for the programmer to analyze.
 The data that are collected by the methods above are the number of active streams and number of streams that you liked for a single execution of the program.
 
@@ -136,7 +122,6 @@ sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.get_start_time()
 sl.is_streaming()
-sl.get_stream_links("C:/Users/Stream data")
 sl.like_videos()
 sl.get_end_time()
 sl.driver_quit()
@@ -166,10 +151,9 @@ sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, tab
 ### start_liking_with_data(self, user, host, passwd, db, table_name)
 This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
 ```python
-def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, txt_dir):
+def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
     self.get_start_time()
     self.is_streaming()
-    self.get_stream_links(txt_dir)
     self.like_videos()
     self.get_end_time()
     self.append_data_on_file(my_dir)
@@ -188,11 +172,10 @@ db_passwd = 'baqua'
 db = 'YSL'
 table_name = 'stream_data'
 my_dir = 'C:/Users/Stream data'
-txt_dir = 'C:/Users/Stream data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
-sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir, txt_dir)
+sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir)
 sl.driver_quit()
 ```
 
