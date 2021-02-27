@@ -38,6 +38,7 @@ class StreamLiker(YSL):
         self.total_time_elapsed = 0
         self.time_ended = None
 
+        self.active_streams = []
         self.currently_streaming = {}
         self.streams_liked = {}
         self.streams_liked_id = []
@@ -149,6 +150,7 @@ class StreamLiker(YSL):
                 except:
                     assert False, "LinkFetchError: Cannot find XPATH."
 
+                self.active_streams.append(link[32:])
                 self.driver.get(link)
 
                 try:
