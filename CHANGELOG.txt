@@ -42,3 +42,8 @@ Change Log
 --------------
 -Checking if videos are liked are now done on the selenium webdriver.
 -Quits drivers if an error happens.
+
+1.4.1(02/27/21)
+--------------
+-Errors now use assert statements instead of print statements.
+-Channels that are streaming will now be shown on the console.
