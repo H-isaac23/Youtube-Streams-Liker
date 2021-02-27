@@ -54,7 +54,7 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
-        self.version = 1.4
+        self.version = "1.4.1"
 
     def clear_data(self):
         self.start_time = None
@@ -90,8 +90,10 @@ class StreamLiker(YSL):
                 if stream_active:
                     self.currently_streaming[name] = channel_url
                     self.number_of_active_streams += 1
+                    print(f"{name} is currently streaming.")
 
             self.stream_data['No. of active streams'] = self.number_of_active_streams
+            print()
         except:
             assert False, "is_streamingError: MaxConnection Pool. Restart the program"
 
