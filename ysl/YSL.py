@@ -77,19 +77,22 @@ class StreamLiker(YSL):
 
     def is_streaming(self):
 
-        ##### Status Code
-        print('Checking for streams...')
-        print()
+        try:
+            ##### Status Code
+            print('Checking for streams...')
+            print()
 
-        for name in self.channels.keys():
-            channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
-            response = requests.get(channel_url).text
-            stream_active = '{"text":" watching"}' in response
-            if stream_active:
-                self.currently_streaming[name] = channel_url
-                self.number_of_active_streams += 1
+            for name in self.channels.keys():
+                channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
+                response = requests.get(channel_url).text
+                stream_active = '{"text":" watching"}' in response
+                if stream_active:
+                    self.currently_streaming[name] = channel_url
+                    self.number_of_active_streams += 1
 
-        self.stream_data['No. of active streams'] = self.number_of_active_streams
+            self.stream_data['No. of active streams'] = self.number_of_active_streams
+        except:
+            assert False, "is_streamingError: MaxConnection Pool. Restart the program"
 
     def like_videos(self):
 
@@ -112,8 +115,8 @@ class StreamLiker(YSL):
                 email.send_keys(EMAIL)
                 email.send_keys(Keys.RETURN)
             except:
-                print('There is a problem in the email idk lmao, driver quitting')
                 self.driver_quit()
+                assert False, "GoogleEmailError: Cannot find XPATH."
 
             time.sleep(5)
 
@@ -127,8 +130,8 @@ class StreamLiker(YSL):
                 password.send_keys(PASSWORD)
                 password.send_keys(Keys.RETURN)
             except:
-                print("Password textbox not found")
                 self.driver_quit()
+                assert False, "GooglePasswordError: Cannot find XPATH."
 
             time.sleep(5)
 
@@ -144,7 +147,7 @@ class StreamLiker(YSL):
                     )
                     link = video_url.get_attribute('href')
                 except:
-                    print("lol getting link error")
+                    assert False, "LinkFetchError: Cannot find XPATH."
 
                 self.driver.get(link)
 
@@ -158,8 +161,8 @@ class StreamLiker(YSL):
                         print(f"Video from {name} is already liked.")
 
                 except:
-                    print("like button error or something idk")
                     self.driver_quit()
+                    assert False, "LikeButtonError: Cannot find XPATH."
 
                 if not is_liked:
                     self.video_ids.append(link[32:])
@@ -248,7 +251,6 @@ class StreamLiker(YSL):
             self.append_data_on_file(my_dir)
             self.append_data_on_db(user, host, passwd, db, table_name)
         except:
-            print("Error somewhere")
             self.driver_quit()
 
     def config_driver(self, path, args=None):
