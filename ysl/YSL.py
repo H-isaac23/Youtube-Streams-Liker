@@ -87,12 +87,13 @@ class StreamLiker(YSL):
             channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
             response = requests.get(channel_url).text
             stream_active = '{"text":" watching"}' in response
+            print("is ", end="")
             if stream_active:
                 self.currently_streaming[name] = channel_url
                 self.number_of_active_streams += 1
-                print("is currently streaming.")
+                print("currently streaming.")
             else:
-                print("Not streaming.")
+                print("not streaming.")
 
         self.stream_data['No. of active streams'] = self.number_of_active_streams
         print()
@@ -247,15 +248,13 @@ class StreamLiker(YSL):
         db.commit()
 
     def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
-        try:
-            self.get_start_time()
-            self.is_streaming()
-            self.like_videos()
-            self.get_end_time()
-            self.append_data_on_file(my_dir)
-            self.append_data_on_db(user, host, passwd, db, table_name)
-        except:
-            self.driver_quit()
+        self.get_start_time()
+        self.is_streaming()
+        self.config_driver('C:/Program Files (x86)/geckodriver.exe', ['--headless', '--mute-audio'])
+        self.like_videos()
+        self.get_end_time()
+        self.append_data_on_file(my_dir)
+        self.append_data_on_db(user, host, passwd, db, table_name)
 
     def config_driver(self, path, args=None):
         try:
