@@ -83,13 +83,16 @@ class StreamLiker(YSL):
         print()
 
         for name in self.channels.keys():
+            print(name, end=" - ")
             channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
             response = requests.get(channel_url).text
             stream_active = '{"text":" watching"}' in response
             if stream_active:
                 self.currently_streaming[name] = channel_url
                 self.number_of_active_streams += 1
-                print(f"{name} is currently streaming.")
+                print("is currently streaming.")
+            else:
+                print("Not streaming.")
 
         self.stream_data['No. of active streams'] = self.number_of_active_streams
         print()
