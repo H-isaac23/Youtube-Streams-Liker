@@ -213,7 +213,10 @@ class StreamLiker(YSL):
     def append_data_on_db(self, user, host, passwd, database, table_name):
         tel = self.stream_data["Time elapsed"]
         nas = self.stream_data["No. of active streams"]
-        nls = self.stream_data["No. of to-be-liked streams"]
+        if "No. of to-be-liked streams" not in self.stream_data.keys():
+            nls = 0
+        else:
+            nls = self.stream_data["No. of to-be-liked streams"]
         ts = self.stream_data["Time Started"]
         te = self.stream_data["Time Ended"]
         d = self.date
