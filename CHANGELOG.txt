@@ -47,3 +47,8 @@ Change Log
 --------------
 -Errors now use assert statements instead of print statements.
 -Channels that are streaming will now be shown on the console.
+
+1.4.2(02/07/21)
+--------------
+-Rearranged code for faster program execution.
+-Updated program description.
