@@ -250,10 +250,10 @@ class StreamLiker(YSL):
         my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, options = None):
         self.get_start_time()
         self.is_streaming()
-        self.config_driver('C:/Program Files (x86)/geckodriver.exe', ['--headless', '--mute-audio'])
+        self.config_driver(path, options)
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file(my_dir)
