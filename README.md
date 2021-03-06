@@ -74,7 +74,17 @@ sl.is_streaming()
 This will store the channel ids of the currently streaming channels on a dictionary.
 
 ### 3.
-Now that we have the video links, we will now like them using a selenium webdriver. Simply call the method like_videos() to get started.
+Now that we have the video links, we will now like them using a selenium webdriver.
+We first need to configure the selenium webdriver by passing in the path for the geckodriver.
+
+Example:
+``` python
+# options = ['headless', '--mute-audio'], the "options" variable can be passed as the second argument.
+sl.config_driver(path)
+```
+
+After configuring the driver, we can now start liking videos.
+Simply call the like_videos method.
 
 Example:
 ``` python
@@ -95,9 +105,10 @@ email = 'email@test.com'
 passwd = 'qwerty'
 c_id = 'channels id.txt'
 sl = StreamLiker(c_id, email, passwd)
-sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
+path = 'C:/Program Files (x86)/geckodriver.exe'
 sl.is_streaming()
+sl.config_driver(path)
 sl.like_videos()
 sl.driver_quit()
 ```
@@ -118,10 +129,10 @@ email = 'email@test.com'
 passwd = 'qwerty'
 c_id = 'channels id.txt'
 sl = StreamLiker(c_id, email, passwd)
-sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 
 sl.get_start_time()
 sl.is_streaming()
+sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 sl.like_videos()
 sl.get_end_time()
 sl.driver_quit()
@@ -148,19 +159,8 @@ table_name = 'stream_data'
 sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, table_name=table_name)
 ```
 
-### start_liking_with_data(self, user, host, passwd, db, table_name)
-This method combines all of the mentioned methods above into a single function in order to shorten the needed lines of code to perform all of them.
-```python
-def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir):
-    self.get_start_time()
-    self.is_streaming()
-    self.like_videos()
-    self.get_end_time()
-    self.append_data_on_file(my_dir)
-    self.append_data_on_db(user, host, passwd, db, table_name)
-```
-The user then needs to pass the needed arguments if the user wants to append the data onto their own database.
-Example:
+### Full Code
+
 ```python
 from ysl.YSL import StreamLiker
 
@@ -174,8 +174,13 @@ table_name = 'stream_data'
 my_dir = 'C:/Users/Stream data'
 
 sl = StreamLiker('channel ids.txt', email, yt_passwd)
+sl.get_start_time()
+sl.is_streaming()
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
-sl.start_liking_with_data(user, host, db_passwd, db, table_name, my_dir)
+sl.like_videos()
+sl.get_end_time()
+sl.append_data_on_file(my_dir)
+sl.append_data_on_db(user, host, db_passwd, db, table_name)
 sl.driver_quit()
 ```
 
