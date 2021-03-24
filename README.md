@@ -33,6 +33,9 @@ UCFTLzh12_nrtzqBPsTCqenA - Aki
 UCD8HOxPs4Xvsm8H0ZxXGiBw - Mel
 UC1CfXB_kRs3C-zaeTG3oGyg - Haato
 ```
+
+-You also need to login into Google using the regular firefox browser. Simply open firefox after installing, login to google, and just make sure you don't log out.
+
 ### 0. Installation
 Install this library in a virtualenv using pip. [virtualenv](https://virtualenv.pypa.io/en/latest/) is a tool to create isolated Python environments. The basic problem it addresses is one of dependencies and versions, and indirectly permissions.
 
