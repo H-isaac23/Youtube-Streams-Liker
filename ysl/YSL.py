@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from collections import OrderedDict
 from random import randint
 from datetime import date
@@ -54,7 +55,7 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
-        self.version = "1.4.1"
+        self.version = "1.5"
 
     def clear_data(self):
         self.start_time = None
@@ -104,40 +105,40 @@ class StreamLiker(YSL):
             print("There are no active streams as of the moment.")
         elif self.number_of_active_streams > 0:
 
-            print("Logging into google...\n")
-
-            EMAIL = self.email
-            PASSWORD = self.passwd
-
-            self.driver.get(
-                """https://accounts.google.com/signin/v2/identifier?hl=en&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin""")
-            try:
-                email = WebDriverWait(self.driver, 10).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="identifierId"]'))
-                )
-                time.sleep(randint(4, 7))
-                email.send_keys(EMAIL)
-                email.send_keys(Keys.RETURN)
-            except:
-                self.driver_quit()
-                assert False, "GoogleEmailError: Cannot find XPATH."
-
-            time.sleep(5)
-
-            try:
-                password = WebDriverWait(self.driver, 10).until(
-                    EC.presence_of_element_located(
-                        (By.XPATH,
-                         "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input"))
-                )
-                time.sleep(3)
-                password.send_keys(PASSWORD)
-                password.send_keys(Keys.RETURN)
-            except:
-                self.driver_quit()
-                assert False, "GooglePasswordError: Cannot find XPATH."
-
-            time.sleep(5)
+            # print("Logging into google...\n")
+            #
+            # EMAIL = self.email
+            # PASSWORD = self.passwd
+            #
+            # self.driver.get(
+            #     """https://accounts.google.com/signin/v2/identifier?hl=en&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin""")
+            # try:
+            #     email = WebDriverWait(self.driver, 10).until(
+            #         EC.presence_of_element_located((By.XPATH, '//*[@id="identifierId"]'))
+            #     )
+            #     time.sleep(randint(4, 7))
+            #     email.send_keys(EMAIL)
+            #     email.send_keys(Keys.RETURN)
+            # except:
+            #     self.driver_quit()
+            #     assert False, "GoogleEmailError: Cannot find XPATH."
+            #
+            # time.sleep(5)
+            #
+            # try:
+            #     password = WebDriverWait(self.driver, 10).until(
+            #         EC.presence_of_element_located(
+            #             (By.XPATH,
+            #              "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input"))
+            #     )
+            #     time.sleep(3)
+            #     password.send_keys(PASSWORD)
+            #     password.send_keys(Keys.RETURN)
+            # except:
+            #     self.driver_quit()
+            #     assert False, "GooglePasswordError: Cannot find XPATH."
+            #
+            # time.sleep(5)
 
             for name, channel_link in self.currently_streaming.items():
                 is_liked = False
@@ -266,7 +267,20 @@ class StreamLiker(YSL):
         except:
             print("No args supplied for driver options.")
 
-        self.driver = webdriver.Firefox(options=self.options, executable_path=path)
+        profile = webdriver.FirefoxProfile(
+            'C:/Users/ISAAC/AppData/Roaming/Mozilla/Firefox/Profiles/fwnbfuph.default-release'
+        )
+        profile.set_preference("dom.webdriver.enabled", False)
+        profile.set_preference('useAutomationExtension', False)
+        profile.update_preferences()
+        desired = DesiredCapabilities.FIREFOX
+
+        self.driver = webdriver.Firefox(
+            options=self.options,
+            executable_path=path,
+            firefox_profile=profile,
+            desired_capabilities=desired
+        )
 
     def driver_quit(self):
         self.driver.quit()
