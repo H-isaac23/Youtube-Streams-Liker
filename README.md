@@ -36,7 +36,7 @@ UC1CfXB_kRs3C-zaeTG3oGyg - Haato
 
 -You also need to login into Google using the regular firefox browser. Simply open firefox after installing, login to google, and just make sure you don't log out.
 
-### 0. Installation
+### 1. Installation
 Install this library in a virtualenv using pip. [virtualenv](https://virtualenv.pypa.io/en/latest/) is a tool to create isolated Python environments. The basic problem it addresses is one of dependencies and versions, and indirectly permissions.
 
 With virtualenv, it's possible to install this library without needing system install permissions, and without clashing with the installed system dependencies.
@@ -47,7 +47,7 @@ virtualenv <your-env>
 <your-env>\Scripts\pip.exe install YSL-H-isaac23
 ```
 
-### 1. 
+### 2. 
 Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
 And the configure the driver by passing the path for the driver and the options.(Driver options is optional)
 
@@ -68,7 +68,7 @@ sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
 # Example(with options): sl.config_driver('C:/Program Files (x86)/geckodriver.exe', ['--headless'])
 ```
 
-### 2.
+### 3.
 To start liking active streams, we first have to check if the channels that we supplied are currently streaming. To check, we can call the is_streaming() method.
 Example:
 ``` python
@@ -76,7 +76,7 @@ sl.is_streaming()
 ```
 This will store the channel ids of the currently streaming channels on a dictionary.
 
-### 3.
+### 4.
 Now that we have the video links, we will now like them using a selenium webdriver.
 We first need to configure the selenium webdriver by passing in the path for the geckodriver.
 
@@ -117,7 +117,7 @@ sl.driver_quit()
 ```
 *Note*: In case the user wants to put the process into a for loop for multiple
 
-### 4. (OPTIONAL)
+### 5. (OPTIONAL)
 For math nerds(I'm not one of them but I certainly will try to become one), there are additional methods that will let you use some data from the process of liking the video for the programmer to analyze.
 The data that are collected by the methods above are the number of active streams and number of streams that you liked for a single execution of the program.
 
