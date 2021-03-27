@@ -2,7 +2,7 @@
 /venv/
 *.json
 /__pycache__
-/test file.py
+/data restore.py
 *.log
 /video links.txt
 /video_liker.py
@@ -15,4 +15,4 @@
 /YSL_H_isaac23.egg-info
 /ysl/__pycache__
 /test.txt
-/test2.txt
+/data restore.py
