@@ -82,18 +82,21 @@ class StreamLiker(YSL):
         print('-'*30)
 
         for name in self.channels.keys():
-            print(name, end=" - ")
             channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
             response = requests.get(channel_url).text
             stream_active = '{"text":" watching"}' in response
+
+            print(name, end=" - ")
             print("is ", end="")
             if stream_active:
-                self.currently_streaming[name] = channel_url
+                v_index = response.find("videoRenderer")
+                self.currently_streaming[name] = response[v_index+27:v_index+38]
                 self.number_of_active_streams += 1
                 print("currently streaming.")
             else:
                 print("not streaming.")
 
+        print(self.currently_streaming)
         self.stream_data['No. of active streams'] = self.number_of_active_streams
         e_time = time.time()
         self.check_streamers_time = e_time - s_time
@@ -107,21 +110,22 @@ class StreamLiker(YSL):
         elif self.number_of_active_streams > 0:
             print("Current status: Liking videos...")
             print('-' * 30)
-            for name, channel_link in self.currently_streaming.items():
+            for name, video_id in self.currently_streaming.items():
                 is_liked = False
-                like_button = None
-                link = None
-                self.driver.get(channel_link + '/videos')
-
-                try:
-                    video_url = WebDriverWait(self.driver, 10).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
-                    )
-                    link = video_url.get_attribute('href')
-                except:
-                    assert False, "LinkFetchError: Cannot find XPATH."
-
-                self.active_streams.append(link[32:])
+                # like_button = None
+                # link = None
+                # self.driver.get(channel_link + '/videos')
+                #
+                # try:
+                #     video_url = WebDriverWait(self.driver, 10).until(
+                #         EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
+                #     )
+                #     link = video_url.get_attribute('href')
+                # except:
+                #     assert False, "LinkFetchError: Cannot find XPATH."
+                #
+                # self.active_streams.append(link[32:])
+                link = "https://www.youtube.com/watch?v=" + video_id
                 self.driver.get(link)
 
                 try:
@@ -138,7 +142,6 @@ class StreamLiker(YSL):
                     assert False, "LikeButtonError: Cannot find XPATH."
 
                 if not is_liked:
-                    self.video_ids.append(link[32:])
                     self.number_of_to_be_liked_streams += 1
                     ActionChains(self.driver).move_to_element(like_button).click(like_button).perform()
                     print(f"Video from {name} is liked.")
@@ -252,3 +255,16 @@ class StreamLiker(YSL):
 
     def driver_quit(self):
         self.driver.quit()
+
+if __name__ == "__main__":
+    email = "aishahololive1@gmail.com"
+    passw = "Aishahololive1!"
+    c_id = "channel ids.txt"
+
+    sl = StreamLiker(c_id, email, passw)
+
+    path = 'C:/Program Files (x86)/geckodriver.exe'
+    sl.is_streaming()
+    sl.config_driver(path, ["--headless", "--mute-audio"])
+    sl.like_videos()
+    sl.driver_quit()
