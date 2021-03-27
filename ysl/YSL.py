@@ -29,7 +29,7 @@ class YSL:
 
 
 class StreamLiker(YSL):
-    def __init__(self, channels_path, email, passwd):
+    def __init__(self, channels_path):
         super(StreamLiker, self).__init__(channels_path)
         self.start_time = None
         self.time_started = None
@@ -37,18 +37,11 @@ class StreamLiker(YSL):
         self.time_ended = None
         self.check_streamers_time = None
 
-        self.active_streams = []
         self.currently_streaming = {}
-        self.streams_liked = {}
-        self.streams_liked_id = []
-        self.video_ids = []
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
         self.date = None
-
-        self.email = email
-        self.passwd = passwd
 
         self.driver = None
         self.options = FirefoxOptions()
@@ -62,9 +55,6 @@ class StreamLiker(YSL):
         self.time_ended = None
 
         self.currently_streaming = {}
-        self.streams_liked = {}
-        self.streams_liked_id = []
-        self.video_ids = []
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
@@ -112,19 +102,6 @@ class StreamLiker(YSL):
             print('-' * 30)
             for name, video_id in self.currently_streaming.items():
                 is_liked = False
-                # like_button = None
-                # link = None
-                # self.driver.get(channel_link + '/videos')
-                #
-                # try:
-                #     video_url = WebDriverWait(self.driver, 10).until(
-                #         EC.presence_of_element_located((By.XPATH, '//*[@id="thumbnail"]'))
-                #     )
-                #     link = video_url.get_attribute('href')
-                # except:
-                #     assert False, "LinkFetchError: Cannot find XPATH."
-                #
-                # self.active_streams.append(link[32:])
                 link = "https://www.youtube.com/watch?v=" + video_id
                 self.driver.get(link)
 
@@ -147,7 +124,8 @@ class StreamLiker(YSL):
                     print(f"Video from {name} is liked.")
 
             self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
-            self.stream_data['Streams liked'] = ', '.join(self.video_ids)
+            self.stream_data['Streams liked'] = ','.join(self.currently_streaming.values())
+            print(self.stream_data['Streams liked'])
 
     def get_end_time(self):
         self.time_ended = time.strftime("%H:%M:%S", time.localtime())
@@ -261,7 +239,7 @@ if __name__ == "__main__":
     passw = "Aishahololive1!"
     c_id = "channel ids.txt"
 
-    sl = StreamLiker(c_id, email, passw)
+    sl = StreamLiker(c_id)
 
     path = 'C:/Program Files (x86)/geckodriver.exe'
     sl.is_streaming()
