@@ -46,7 +46,7 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
-        self.version = "1.5.1"
+        self.version = "1.5.1.b"
 
     def clear_data(self):
         self.start_time = None
@@ -125,7 +125,6 @@ class StreamLiker(YSL):
 
             self.stream_data['No. of to-be-liked streams'] = self.number_of_to_be_liked_streams
             self.stream_data['Streams liked'] = ','.join(self.currently_streaming.values())
-            print(self.stream_data['Streams liked'])
 
     def get_end_time(self):
         self.time_ended = time.strftime("%H:%M:%S", time.localtime())
@@ -200,7 +199,7 @@ class StreamLiker(YSL):
         my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver, cst))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, options = None):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, options=None):
         self.get_start_time()
         self.is_streaming()
         self.config_driver(path, options)
@@ -233,16 +232,3 @@ class StreamLiker(YSL):
 
     def driver_quit(self):
         self.driver.quit()
-
-if __name__ == "__main__":
-    email = "aishahololive1@gmail.com"
-    passw = "Aishahololive1!"
-    c_id = "channel ids.txt"
-
-    sl = StreamLiker(c_id)
-
-    path = 'C:/Program Files (x86)/geckodriver.exe'
-    sl.is_streaming()
-    sl.config_driver(path, ["--headless", "--mute-audio"])
-    sl.like_videos()
-    sl.driver_quit()
