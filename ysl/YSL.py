@@ -199,24 +199,25 @@ class StreamLiker(YSL):
         my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver, cst))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, options=None):
+    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, profile, options=None):
         self.get_start_time()
         self.is_streaming()
-        self.config_driver(path, options)
+        self.config_driver(path, profile, options)
         self.like_videos()
         self.get_end_time()
         self.append_data_on_file(my_dir)
         self.append_data_on_db(user, host, passwd, db, table_name)
 
-    def config_driver(self, path, args=None):
+    def config_driver(self, path, firefox_profile, args=None):
         try:
             for arg in args:
                 self.options.add_argument(arg)
         except:
             print("No args supplied for driver options.")
 
+        # 'C:/Users/ISAAC/AppData/Roaming/Mozilla/Firefox/Profiles/fwnbfuph.default-release'
         profile = webdriver.FirefoxProfile(
-            'C:/Users/ISAAC/AppData/Roaming/Mozilla/Firefox/Profiles/fwnbfuph.default-release'
+            firefox_profile
         )
         profile.set_preference("dom.webdriver.enabled", False)
         profile.set_preference('useAutomationExtension', False)
