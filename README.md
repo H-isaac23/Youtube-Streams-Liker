@@ -34,6 +34,7 @@ UCD8HOxPs4Xvsm8H0ZxXGiBw - Mel
 UC1CfXB_kRs3C-zaeTG3oGyg - Haato
 ```
 
+### Note:
 -You also need to login into Google using the regular firefox browser. Simply open firefox after installing, login to google, and just make sure you don't log out.
 
 ### 1. Installation
@@ -48,19 +49,17 @@ virtualenv <your-env>
 ```
 
 ### 2. 
-Create an instance of the class StreamLiker, and pass in the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
+Create an instance of the class StreamLiker, and pass in the path for the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
 And the configure the driver by passing the path for the driver and the options.(Driver options is optional)
 
 Example:
 ``` python
 from ysl.YSL import StreamLiker
 
-email = 'email@test.com'
-passwd = 'qwerty'
-c_id = 'channels id.txt'
+c_id = 'C:/Users/isaac/channel_ids.txt'
 
 # Create an instance of the StreamLiker class 
-sl = StreamLiker(c_id, email, passwd)
+sl = StreamLiker(c_id)
 
 # Configure the driver.
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
@@ -79,11 +78,13 @@ This will store the channel ids of the currently streaming channels on a diction
 ### 4.
 Now that we have the video links, we will now like them using a selenium webdriver.
 We first need to configure the selenium webdriver by passing in the path for the geckodriver.
+And then pass in the firefox profile. ([This](https://www.howtogeek.com/255587/how-to-find-your-firefox-profile-folder-on-windows-mac-and-linux/#:%7E:text=The%20default%20locations%20are%3A,%2FFirefox%2FProfiles%2Fxxxxxxxx.) can help you find your profile location.)
 
 Example:
 ``` python
-# options = ['headless', '--mute-audio'], the "options" variable can be passed as the second argument.
-sl.config_driver(path)
+options = ['--headless', '--mute-audio'] # the "options" variable can be passed as the second argument.
+firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+sl.config_driver(path, firefox_profile, options)
 ```
 
 After configuring the driver, we can now start liking videos.
@@ -104,18 +105,16 @@ Full Code:
 ```python
 from ysl.YSL import StreamLiker
 
-email = 'email@test.com'
-passwd = 'qwerty'
-c_id = 'channels id.txt'
-sl = StreamLiker(c_id, email, passwd)
+c_id = 'C:/Users/isaac/channel_ids.txt'
+sl = StreamLiker(c_id)
 
 path = 'C:/Program Files (x86)/geckodriver.exe'
+firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 sl.is_streaming()
-sl.config_driver(path)
+sl.config_driver(path, firefox_profile)
 sl.like_videos()
 sl.driver_quit()
 ```
-*Note*: In case the user wants to put the process into a for loop for multiple
 
 ### 5. (OPTIONAL)
 For math nerds(I'm not one of them but I certainly will try to become one), there are additional methods that will let you use some data from the process of liking the video for the programmer to analyze.
@@ -128,10 +127,8 @@ Example:
 ```python
 from ysl.YSL import StreamLiker
 
-email = 'email@test.com'
-passwd = 'qwerty'
-c_id = 'channels id.txt'
-sl = StreamLiker(c_id, email, passwd)
+c_id = 'C:/Users/isaac/channel_ids.txt'
+sl = StreamLiker(c_id)
 
 sl.get_start_time()
 sl.is_streaming()
@@ -167,8 +164,6 @@ sl.append_data_on_db(user=user, host=host, passwd=passwd, database=database, tab
 ```python
 from ysl.YSL import StreamLiker
 
-email = 'yt@test.com'
-yt_passwd = 'fubukibestfriend'
 user = 'root'
 host = 'localhost'
 db_passwd = 'baqua'
@@ -176,7 +171,7 @@ db = 'YSL'
 table_name = 'stream_data'
 my_dir = 'C:/Users/Stream data'
 
-sl = StreamLiker('channel ids.txt', email, yt_passwd)
+sl = StreamLiker('C:/Users/isaac/channel_ids.txt')
 sl.get_start_time()
 sl.is_streaming()
 sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
