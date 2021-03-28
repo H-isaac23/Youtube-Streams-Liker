@@ -61,3 +61,7 @@ Change Log
 --------------
 -Remove unnecessary imports and comments.
 -Added additional data for stream data.
+
+1.5.2(03/28/21)
+--------------
+-Add firefox profile as argument for config_driver function
