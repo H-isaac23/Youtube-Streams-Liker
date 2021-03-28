@@ -46,7 +46,7 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
-        self.version = "1.5.1.b"
+        self.version = "1.5.2"
 
     def clear_data(self):
         self.start_time = None
@@ -67,7 +67,7 @@ class StreamLiker(YSL):
 
     def is_streaming(self):
         s_time = time.time()
-        ##### Status Code
+
         print('Current Status: Checking for streams...')
         print('-'*30)
 
@@ -215,7 +215,6 @@ class StreamLiker(YSL):
         except:
             print("No args supplied for driver options.")
 
-        # 'C:/Users/ISAAC/AppData/Roaming/Mozilla/Firefox/Profiles/fwnbfuph.default-release'
         profile = webdriver.FirefoxProfile(
             firefox_profile
         )
