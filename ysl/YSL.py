@@ -43,6 +43,7 @@ class StreamLiker(YSL):
         self.number_of_to_be_liked_streams = 0
         self.date = None
 
+        self.like = False
         self.driver = None
         self.options = FirefoxOptions()
 
@@ -86,7 +87,6 @@ class StreamLiker(YSL):
             else:
                 print("not streaming.")
 
-        print(self.currently_streaming)
         self.stream_data['No. of active streams'] = self.number_of_active_streams
         e_time = time.time()
         self.check_streamers_time = e_time - s_time
@@ -95,9 +95,7 @@ class StreamLiker(YSL):
 
     def like_videos(self):
 
-        if self.number_of_active_streams == 0:
-            print("There are no active streams as of the moment.")
-        elif self.number_of_active_streams > 0:
+        if self.like:
             print("Current status: Liking videos...")
             print('-' * 30)
             for name, video_id in self.currently_streaming.items():
@@ -209,6 +207,11 @@ class StreamLiker(YSL):
         self.append_data_on_db(user, host, passwd, db, table_name)
 
     def config_driver(self, path, firefox_profile, args=None):
+        if self.number_of_active_streams == 0:
+            print("There are no active streams as of the moment.")
+            return
+
+        self.like = True
         try:
             for arg in args:
                 self.options.add_argument(arg)
