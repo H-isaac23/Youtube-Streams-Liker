@@ -54,12 +54,15 @@ class StreamLiker(YSL):
         self.time_started = None
         self.total_time_elapsed = 0
         self.time_ended = None
+        self.check_streamers_time = None
 
         self.currently_streaming = {}
         self.stream_data = OrderedDict()
         self.number_of_active_streams = 0
         self.number_of_to_be_liked_streams = 0
         self.date = None
+
+        self.like = False
 
     def get_start_time(self):
         self.start_time = time.time()
