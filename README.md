@@ -49,8 +49,7 @@ virtualenv <your-env>
 ```
 
 ### 2. 
-Create an instance of the class StreamLiker, and pass in the path for the text file for the channel ids of the channels you want checked, the email, and then the password of your youtube account.
-And the configure the driver by passing the path for the driver and the options.(Driver options is optional)
+Create an instance of the class StreamLiker, and pass in the path for the text file for the channel ids of the channels you want to check for active streams.
 
 Example:
 ``` python
@@ -60,11 +59,6 @@ c_id = 'C:/Users/isaac/channel_ids.txt'
 
 # Create an instance of the StreamLiker class 
 sl = StreamLiker(c_id)
-
-# Configure the driver.
-sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
-
-# Example(with options): sl.config_driver('C:/Program Files (x86)/geckodriver.exe', ['--headless'])
 ```
 
 ### 3.
@@ -82,7 +76,7 @@ And then pass in the firefox profile. ([This](https://www.howtogeek.com/255587/h
 
 Example:
 ``` python
-options = ['--headless', '--mute-audio'] # the "options" variable can be passed as the second argument.
+options = ['--headless', '--mute-audio'] # the "options" variable can be passed as the second argument and is optional (No pun intended.)
 firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 sl.config_driver(path, firefox_profile, options)
 ```
@@ -95,7 +89,7 @@ Example:
 sl.like_videos()
 ```
 
-And with that, the streams of the youtubers that you want to like can now be done automatically. 
+And with that, the streams of the youtubers that you want to like will now be done automatically. 
 Finally, the user should end the session of the driver.
 ``` python
 sl.driver_quit()
