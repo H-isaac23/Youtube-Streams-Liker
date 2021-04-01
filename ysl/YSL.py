@@ -237,4 +237,5 @@ class StreamLiker(YSL):
         )
 
     def driver_quit(self):
-        self.driver.quit()
+        if self.like:
+            self.driver.quit()
