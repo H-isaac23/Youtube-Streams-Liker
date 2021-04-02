@@ -200,16 +200,7 @@ class StreamLiker(YSL):
         my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver, cst))
         db.commit()
 
-    def start_liking_with_data(self, user, host, passwd, db, table_name, my_dir, path, profile, options=None):
-        self.get_start_time()
-        self.is_streaming()
-        self.config_driver(path, profile, options)
-        self.like_videos()
-        self.get_end_time()
-        self.append_data_on_file(my_dir)
-        self.append_data_on_db(user, host, passwd, db, table_name)
-
-    def config_driver(self, path, firefox_profile, args=None):
+    def config_driver(self, path, firefox_profile, args=None, mute_sound=False):
         if self.number_of_active_streams == 0:
             print("There are no active streams as of the moment.")
             return
@@ -224,8 +215,11 @@ class StreamLiker(YSL):
         profile = webdriver.FirefoxProfile(
             firefox_profile
         )
+
         profile.set_preference("dom.webdriver.enabled", False)
         profile.set_preference('useAutomationExtension', False)
+        if mute_sound:
+            profile.set_preference("media.volume_scale", "0.0")
         profile.update_preferences()
         desired = DesiredCapabilities.FIREFOX
 
