@@ -96,6 +96,39 @@ class StreamLiker(YSL):
         self.stream_data['Check streamers time'] = self.check_streamers_time
         print()
 
+    def config_driver(self, path, firefox_profile, args=None, mute_sound=False):
+        if self.number_of_active_streams == 0:
+            print("There are no active streams as of the moment.")
+            return
+
+        print("Current status: Configuring driver...")
+        print('-' * 30)
+
+        self.like = True
+        try:
+            for arg in args:
+                self.options.add_argument(arg)
+        except:
+            print("No args supplied for driver options.")
+
+        profile = webdriver.FirefoxProfile(
+            firefox_profile
+        )
+
+        profile.set_preference("dom.webdriver.enabled", False)
+        profile.set_preference('useAutomationExtension', False)
+        if mute_sound:
+            profile.set_preference("media.volume_scale", "0.0")
+        profile.update_preferences()
+        desired = DesiredCapabilities.FIREFOX
+
+        self.driver = webdriver.Firefox(
+            options=self.options,
+            executable_path=path,
+            firefox_profile=profile,
+            desired_capabilities=desired
+        )
+
     def like_videos(self):
 
         if self.like:
@@ -199,36 +232,6 @@ class StreamLiker(YSL):
                                  check_streamers_time) """ % table_name
         my_cursor.execute(query + "VALUES(%s,%s,%s,%s,%s,%s,%s,%s)", (tel, nas, nls, ts, te, d, ver, cst))
         db.commit()
-
-    def config_driver(self, path, firefox_profile, args=None, mute_sound=False):
-        if self.number_of_active_streams == 0:
-            print("There are no active streams as of the moment.")
-            return
-
-        self.like = True
-        try:
-            for arg in args:
-                self.options.add_argument(arg)
-        except:
-            print("No args supplied for driver options.")
-
-        profile = webdriver.FirefoxProfile(
-            firefox_profile
-        )
-
-        profile.set_preference("dom.webdriver.enabled", False)
-        profile.set_preference('useAutomationExtension', False)
-        if mute_sound:
-            profile.set_preference("media.volume_scale", "0.0")
-        profile.update_preferences()
-        desired = DesiredCapabilities.FIREFOX
-
-        self.driver = webdriver.Firefox(
-            options=self.options,
-            executable_path=path,
-            firefox_profile=profile,
-            desired_capabilities=desired
-        )
 
     def driver_quit(self):
         if self.like:
