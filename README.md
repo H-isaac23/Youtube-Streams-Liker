@@ -63,6 +63,7 @@ sl = StreamLiker(c_id)
 
 ### 3.
 To start liking active streams, we first have to check if the channels that we supplied are currently streaming. To check, we can call the is_streaming() method.
+
 Example:
 ``` python
 sl.is_streaming()
@@ -80,6 +81,16 @@ options = ['--headless', '--mute-audio'] # the "options" variable can be passed 
 firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 sl.config_driver(path, firefox_profile, options)
 ```
+
+The selenium webdriver can be configured so that the sound is muted.
+
+Example:
+``` python
+firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+sl.config_driver(path, firefox_profile, muted_sound=True)
+```
+
+In case the programmer wants to add more modifications to the selenium webdriver, you can do so by accessing the driver object at *self.driver*
 
 After configuring the driver, we can now start liking videos.
 Simply call the like_videos method.
@@ -134,7 +145,9 @@ sl.driver_quit()
 
 *append_data_on_file* takes all the data collected by the program and then stores it in a csv file. 
 Put the directory in which you would want your files to be saved to as an argument.
+
 Note: Use forward slashes.
+
 Example:
 ``` python
 sl.append_data_on_file("C:/Users/Stream data")
