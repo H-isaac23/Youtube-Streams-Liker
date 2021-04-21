@@ -7,6 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from collections import OrderedDict
 from datetime import date
+from threading import Thread
 import mysql.connector
 import csv
 import requests
@@ -18,6 +19,7 @@ class YSL:
     def __init__(self, channels_path):
         self.channels_path = channels_path
         self.channels = {}
+        self.threads = []
         self.get_channels()
 
     def get_channels(self):
@@ -48,6 +50,7 @@ class StreamLiker(YSL):
         self.options = FirefoxOptions()
 
         self.version = "1.5.2"
+        self.status = ""
 
     def clear_data(self):
         self.start_time = None
@@ -69,32 +72,27 @@ class StreamLiker(YSL):
         self.time_started = time.strftime("%H:%M:%S", time.localtime())
         self.stream_data['Time Started'] = self.time_started
 
-    def is_streaming(self):
+    def is_streaming(self, name):
         s_time = time.time()
 
-        print('Current Status: Checking for streams...')
-        print('-'*30)
+        channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
+        response = requests.get(channel_url).text
+        stream_active = '{"text":" watching"}' in response
+        status = f"{name} - is "
 
-        for name in self.channels.keys():
-            channel_url = 'https://www.youtube.com/channel/' + self.channels[name]
-            response = requests.get(channel_url).text
-            stream_active = '{"text":" watching"}' in response
-
-            print(name, end=" - ")
-            print("is ", end="")
-            if stream_active:
-                v_index = response.find("videoRenderer")
-                self.currently_streaming[name] = response[v_index+27:v_index+38]
-                self.number_of_active_streams += 1
-                print("currently streaming.")
-            else:
-                print("not streaming.")
+        if stream_active:
+            v_index = response.find("videoRenderer")
+            self.currently_streaming[name] = response[v_index+27:v_index+38]
+            self.number_of_active_streams += 1
+            status += "currently streaming.\n"
+        else:
+            status += "not streaming.\n"
 
         self.stream_data['No. of active streams'] = self.number_of_active_streams
         e_time = time.time()
         self.check_streamers_time = e_time - s_time
         self.stream_data['Check streamers time'] = self.check_streamers_time
-        print()
+        self.status += status
 
     def config_driver(self, path, firefox_profile, args=None, mute_sound=False):
         if self.number_of_active_streams == 0:
@@ -236,3 +234,18 @@ class StreamLiker(YSL):
     def driver_quit(self):
         if self.like:
             self.driver.quit()
+
+    def thread(self):
+        print('Current Status: Checking for streams...')
+        print('-' * 30)
+
+        for name in self.channels.keys():
+            self.threads.append(Thread(target=self.is_streaming, args=(name,)))
+
+        for thread in self.threads:
+            thread.start()
+
+        for thread in self.threads:
+            thread.join()
+
+        print(self.status)
