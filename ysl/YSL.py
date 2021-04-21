@@ -49,7 +49,7 @@ class StreamLiker(YSL):
         self.driver = None
         self.options = FirefoxOptions()
 
-        self.version = "1.5.2"
+        self.version = "1.6"
         self.status = ""
 
     def clear_data(self):
