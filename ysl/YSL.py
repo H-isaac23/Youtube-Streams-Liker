@@ -235,7 +235,7 @@ class StreamLiker(YSL):
         if self.like:
             self.driver.quit()
 
-    def thread(self):
+    def check_streams(self):
         print('Current Status: Checking for streams...')
         print('-' * 30)
 
