@@ -62,11 +62,11 @@ sl = StreamLiker(c_id)
 ```
 
 ### 3.
-To start liking active streams, we first have to check if the channels that we supplied are currently streaming. To check, we can call the is_streaming() method.
+To start liking active streams, we first have to check if the channels that we supplied are currently streaming. To check, we can call the check_streams() method.
 
 Example:
 ``` python
-sl.is_streaming()
+sl.check_streams()
 ```
 This will store the channel ids of the currently streaming channels on a dictionary.
 
@@ -78,7 +78,7 @@ And then pass in the firefox profile. ([This](https://www.howtogeek.com/255587/h
 Example:
 ``` python
 options = ['--headless', '--mute-audio'] # the "options" variable can be passed as the second argument and is optional (No pun intended.)
-firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+firefox_profile = 'C:/Users/user/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 sl.config_driver(path, firefox_profile, options)
 ```
 
@@ -86,7 +86,7 @@ The selenium webdriver can be configured so that the sound is muted.
 
 Example:
 ``` python
-firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+firefox_profile = 'C:/Users/user/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 sl.config_driver(path, firefox_profile, muted_sound=True)
 ```
 
@@ -114,8 +114,8 @@ c_id = 'C:/Users/isaac/channel_ids.txt'
 sl = StreamLiker(c_id)
 
 path = 'C:/Program Files (x86)/geckodriver.exe'
-firefox_profile = 'C:/Users/isaac/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
-sl.is_streaming()
+firefox_profile = 'C:/Users/user/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+sl.check_streams()
 sl.config_driver(path, firefox_profile)
 sl.like_videos()
 sl.driver_quit()
@@ -135,9 +135,12 @@ from ysl.YSL import StreamLiker
 c_id = 'C:/Users/isaac/channel_ids.txt'
 sl = StreamLiker(c_id)
 
+path = 'C:/Program Files (x86)/geckodriver.exe'
+firefox_profile = 'C:/Users/user/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
+
 sl.get_start_time()
-sl.is_streaming()
-sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
+sl.check_streams()
+sl.config_driver(path, firefox_profile)
 sl.like_videos()
 sl.get_end_time()
 sl.driver_quit()
@@ -177,11 +180,13 @@ db_passwd = 'baqua'
 db = 'YSL'
 table_name = 'stream_data'
 my_dir = 'C:/Users/Stream data'
+path = 'C:/Program Files (x86)/geckodriver.exe'
+firefox_profile = 'C:/Users/user/AppData/Roaming/Mozilla/Firefox/Profiles/xxxxxxxx.default-release'
 
-sl = StreamLiker('C:/Users/isaac/channel_ids.txt')
+sl = StreamLiker('C:/Users/user/channel_ids.txt')
 sl.get_start_time()
-sl.is_streaming()
-sl.config_driver('C:/Program Files (x86)/geckodriver.exe')
+sl.check_streams()
+sl.config_driver(path, firefox_profile)
 sl.like_videos()
 sl.get_end_time()
 sl.append_data_on_file(my_dir)
