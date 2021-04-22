@@ -76,3 +76,7 @@ Change Log
 -Muting audio on selenium webdriver now possible.
 
 -Selenium webdriver will not be configures when there are no active streams available, therefore shortening the runtime.
+
+1.6(04/22/21)
+--------------
+- Use threading for faster execution
