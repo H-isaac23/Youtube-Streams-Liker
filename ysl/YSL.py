@@ -132,7 +132,7 @@ class StreamLiker(YSL):
         if self.like:
             print("Current status: Liking videos...")
             print('-' * 30)
-            no_xsep = True
+            no_exception = True
             for name, video_id in self.currently_streaming.items():
                 is_liked = False
                 link = "https://www.youtube.com/watch?v=" + video_id
@@ -149,10 +149,10 @@ class StreamLiker(YSL):
 
                 except Exception:
                     print("LikeButtonError: Cannot find XPATH. URL may be invalid.")
-                    no_xsep = False
+                    no_exception = False
                     pass
 
-                if not is_liked and no_xsep:
+                if not is_liked and no_exception:
                     self.number_of_to_be_liked_streams += 1
                     ActionChains(self.driver).move_to_element(like_button).click(like_button).perform()
                     print(f"Video from {name} is liked.")
