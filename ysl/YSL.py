@@ -138,19 +138,20 @@ class StreamLiker(YSL):
                 link = "https://www.youtube.com/watch?v=" + video_id
                 self.driver.get(link)
 
-                try:
-                    like_button = WebDriverWait(self.driver, 10).until(
-                        EC.element_to_be_clickable((By.XPATH,
-                                                    '//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button'))
-                    )
-                    if like_button.get_attribute("aria-pressed") == "true":
-                        is_liked = True
-                        print(f"Video from {name} is already liked.")
-
-                except Exception:
-                    print("LikeButtonError: Cannot find XPATH. URL may be invalid.")
-                    no_exception = False
-                    pass
+                # try:
+                like_button = WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button/yt-icon'))
+                )
+                if like_button.get_attribute("aria-pressed") == "true":
+                    is_liked = True
+                    print(f"Video from {name} is already liked.")
+                #//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button
+                # /html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button/yt-icon
+                # except Exception:
+                #     print("LikeButtonError: Cannot find XPATH. URL may be invalid.")
+                #     no_exception = False
+                #     pass
 
                 if not is_liked and no_exception:
                     self.number_of_to_be_liked_streams += 1
