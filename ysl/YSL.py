@@ -141,14 +141,16 @@ class StreamLiker(YSL):
                 try:
                     like_button = WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable((By.XPATH,
-                                                    '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a'))
+                                                    '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button'))
                     )
-                    if like_button.get_attribute("aria-pressed") == "true":
+                    if like_button.get_attribute("class") == "style-scope ytd-toggle-button-renderer style-default-active":
                         is_liked = True
                         print(f"Video from {name} is already liked.")
                 #//*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button
                 # //*[@id="button"]/yt-icon
                 # //*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a
+                # //*[@id="top-level-buttons"]/ytd-toggle-button-renderer[1]/a
+                # /html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[8]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button
                 # /html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a
                 # /html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[6]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button/yt-icon
                 # /html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button/yt-icon

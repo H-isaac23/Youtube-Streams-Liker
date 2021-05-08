@@ -1,86 +1,11 @@
 Change Log
 ==========
 
-1.0.0(02/22/21)
----------------
--First Release
-
-1.0.1(02/22/21)
---------------
--Changed the description of the package.
-
-1.1.0(02/22/21)
---------------
--StreamLiker method append_data_on_db() along with start_liking_with_data() now accepts the table_name of a database.
-
-1.1.3(02/23/21)
---------------
--YSL class now accessible.
-
-1.1.4(02/23/21)
---------------
--Update package description.
-
-1.2.0(02/25/21)
---------------
--Driver configuration functionality added.
-
-1.2.1(02/25/21)
---------------
--Directory for stream data is now passed as a required argument in append_data_on_file method.
-
-1.3(02/25/21)
---------------
--Directory for video links text file is now required.
-
--Fix the "XPATH not found" prompt while users get the stream links.
-
-1.3.1(02/26/21)
---------------
--Minor patches.
-
-1.4(02/26/21)
---------------
--Checking if videos are liked are now done on the selenium webdriver.
-
--Quits drivers if an error happens.
-
-1.4.1(02/27/21)
---------------
--Errors now use assert statements instead of print statements.
-
--Channels that are streaming will now be shown on the console.
-
-1.4.2(02/07/21)
---------------
--Rearranged code for faster program execution.
-
--Updated program description.
-
-1.5(03/24/21)
---------------
--"This browser or app may not be secure" google login is now fixed.
-
-1.5.1(03/25/21)
---------------
--Remove unnecessary imports and comments.
-
--Added additional data for stream data.
-
-1.5.2(03/28/21)
---------------
--Add firefox profile as argument for config_driver function
-
-1.5.2.1 (04/02/21)
---------------
--Muting audio on selenium webdriver now possible.
-
--Selenium webdriver will not be configures when there are no active streams available, therefore shortening the runtime.
-
 1.6(04/22/21)
 --------------
-- Use threading for faster execution
+- Use threading for faster execution.
 
-1.6.0.1/2(05/07/21)
+1.6.0.3(05/07/21)
 --------------
-- Fix new XPATH error
+- Fix XPATH error.
+- Fix unliking already liked videos.
