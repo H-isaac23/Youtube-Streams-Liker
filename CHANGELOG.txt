@@ -80,3 +80,7 @@ Change Log
 1.6(04/22/21)
 --------------
 - Use threading for faster execution
+
+1.6.0.1(05/07/21)
+--------------
+- Fix new XPATH error
